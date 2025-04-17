@@ -26,6 +26,7 @@ app.use('/api', routes.tests);
 app.use('/api', routes.words);
 app.use('/api', routes.expressions);
 app.use('/api', routes.wordFlashcards);
+app.use('/api', routes.report);
 
 
 export default app

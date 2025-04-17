@@ -62,9 +62,17 @@ const register = async(req, res, next)=>{
             "INSERT INTO users (name, email, password, token) VALUES ($1, $2, $3, NULL) RETURNING id, name, email",
             [name, email, hashedPassword]
         );
-        res.status(201).json(newUser.rows[0]);
 
+        await pool.query(
+            'INSERT INTO reports (user_id) VALUES ($1)',
+            [newUser.rows[0].id]
+          );
+
+        res.status(201).json(newUser.rows[0]);
+       
+          
     } catch (err) {
+        console.error(err);
         next(err);
     }
 }

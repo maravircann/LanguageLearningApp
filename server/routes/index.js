@@ -4,7 +4,7 @@ import tests from './test-router.js'
 import words from './word-router.js'
 import expressions from './expression-router.js'
 import wordFlashcards from './word-flashcard-router.js'
-
+import report from './report-router.js'
 import e from 'cors'
 export default{
     auth,
@@ -13,5 +13,5 @@ export default{
     words,
     expressions,
     wordFlashcards,
-    
+    report
 }
