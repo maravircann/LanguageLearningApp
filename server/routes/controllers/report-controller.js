@@ -168,9 +168,86 @@ const updateAfterTest = async (req, res) => {
     }
   };
   
+  const updateAfterLesson = async (req, res) => {
+    try {
+      const { user_id } = req.params;
+      const { new_lesson_time } = req.body;
+  
+      const result = await pool.query('SELECT * FROM reports WHERE user_id = $1', [user_id]);
+      if (result.rows.length === 0) {
+        return res.status(404).json({ message: 'Report not found' });
+      }
+  
+      const report = result.rows[0];
+  
+      const updatedLessonsCompleted = report.lessons_completed + 1;
+      const updatedAvgLessonTime = ((report.avg_lesson_time * report.lessons_completed) + new_lesson_time) / updatedLessonsCompleted;
+      const updatedTotalTime = report.total_time + new_lesson_time;
+  
+      const update = await pool.query(
+        `UPDATE reports SET 
+          lessons_completed = $1,
+          avg_lesson_time = $2,
+          total_time = $3
+        WHERE user_id = $4
+        RETURNING *`,
+        [
+          updatedLessonsCompleted,
+          updatedAvgLessonTime,
+          updatedTotalTime,
+          user_id
+        ]
+      );
+  
+      res.status(200).json({ message: "Report updated after lesson", report: update.rows[0] });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
+  
+  const updateProgressPercent = async (req, res) => {
+    try {
+      const { user_id } = req.params;
+  
+      // Obține numărul de lecții disponibile în total
+      const totalLessonsResult = await pool.query('SELECT COUNT(*) FROM lessons');
+      const totalLessons = parseInt(totalLessonsResult.rows[0].count);
+  
+      // Obține numărul de lecții completate de utilizator
+      const userReportResult = await pool.query('SELECT lessons_completed FROM reports WHERE user_id = $1', [user_id]);
+  
+      if (userReportResult.rows.length === 0) {
+        return res.status(404).json({ message: 'Report not found' });
+      }
+  
+      const lessonsCompleted = userReportResult.rows[0].lessons_completed;
+  
+      // Calculează procentul
+      const progress = totalLessons > 0 ? (lessonsCompleted / totalLessons) * 100 : 0;
+  
+      // Actualizează raportul
+      const updateResult = await pool.query(
+        'UPDATE reports SET progress_percent = $1 WHERE user_id = $2 RETURNING *',
+        [progress, user_id]
+      );
+  
+      res.json({
+        message: 'Progress percent updated',
+        report: updateResult.rows[0]
+      });
+  
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
+  
 export default {
   getReportByUserId,
     updateReport,
     resetReport,
-    updateAfterTest
+    updateAfterTest,
+    updateAfterLesson,
+    updateProgressPercent
 };
