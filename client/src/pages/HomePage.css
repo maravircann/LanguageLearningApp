@@ -1,0 +1,175 @@
+/* Resetare */
+
+.homepage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  padding: 0 5%;
+}
+
+.left-content, .right-content {
+  width: 45%;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #f8e1f4, #d2e4f9);
+  color: #1f1f1f;
+}
+
+.illustration {
+  width: 100%;
+  height: auto;
+  max-width: 400px;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo {
+  height: 40px;
+}
+
+.nav-links a {
+  margin-right: 20px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.nav-links .nav-btn {
+  margin-left: 10px;
+  padding: 6px 14px;
+  border: 1px solid #444;
+  background-color: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.nav-links .nav-register {
+  background-color: #5b0b2c;
+  color: #fff;
+  border: none;
+}
+
+.nav-links .nav-register:hover {
+  background-color: #791040;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 80px 20px 60px;
+  position: relative;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+.hero .brand {
+  color: #6d0f37;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  color: #444;
+  margin-bottom: 40px;
+}
+
+/* Ilustrații */
+.illustration {
+  position: absolute;
+  max-width: 200px;
+  opacity: 0.9;
+}
+
+.left-illustration {
+  top: 60px;
+  left: 30px;
+}
+
+.right-illustration {
+  bottom: 30px;
+  right: 40px;
+}
+
+/* CTA Buttons */
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.btn {
+  padding: 12px 30px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.btn-signin {
+  background-color: #fff;
+  border: 2px solid #ccc;
+  color: #333;
+}
+
+.btn-register {
+  background-color: #6d0f37;
+  color: white;
+  border: none;
+}
+
+.btn-signin:hover {
+  background-color: #f2f2f2;
+}
+
+.btn-register:hover {
+  background-color: #91164f;
+}
+
+/* Responsivitate */
+@media screen and (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .illustration {
+    display: none;
+  }
+}
