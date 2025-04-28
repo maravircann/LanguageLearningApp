@@ -6,7 +6,7 @@ const LessonCard =({ lesson })=> {
     const navigate = useNavigate();
     
     const handleStartLesson = () => {
-        navigate(`/lessons/${lesson.id}`);
+        navigate(`/lesson/${lesson.id}`);
     }
     return (
         <div className="lesson-card">
