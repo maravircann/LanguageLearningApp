@@ -1,0 +1,56 @@
+.test-page {
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .show-answer-button, .correct-button, .wrong-button {
+    margin-top: 1rem;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .show-answer-button {
+    background-color: #5A0A45;
+    color: white;
+  }
+  
+  .correct-button {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .wrong-button {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .progress {
+    margin-top: 1.5rem;
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+  
+  .result-container {
+    text-align: center;
+    margin-top: 5rem;
+  }
+  
+  .progress-bar-container {
+    width: 80%;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    margin: 1rem auto;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #5A0A45, #7c145d);
+    border-radius: 10px;
+    transition: width 0.5s ease-in-out;
+  }
+  

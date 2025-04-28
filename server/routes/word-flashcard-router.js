@@ -4,6 +4,6 @@ import middleware from '../middleware/index.js';
 
 const router = express.Router();
 
-router.get('/flashcard/:lesson_id/words', middleware.authMiddleware, controllers.wordFlashcards.getWordsForFlashcard);
+router.get('/tests/:id/flashcards', middleware.authMiddleware, controllers.wordFlashcards.getWordsForFlashcard);
 
 export default router;

@@ -2,11 +2,11 @@ import pool from '../../db.js';
 
 const getWordsForFlashcard = async (req, res) => {
   try {
-    const { lesson_id } = req.params;
+    const { id } = req.params;
 
     const result = await pool.query(
-      'SELECT * FROM words WHERE lesson_id = $1',
-      [lesson_id]
+      'SELECT id, word FROM words WHERE lesson_id = $1',
+      [id]
     );
 
     res.json(result.rows);

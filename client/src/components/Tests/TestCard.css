@@ -1,0 +1,39 @@
+.test-card {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .test-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .test-card h2 {
+    font-size: 1.5rem;
+    color: #5A0A45;
+  }
+  
+  .test-card p {
+    margin-top: 0.5rem;
+    color: #555;
+  }
+  
+  .test-card button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #5A0A45;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+  
+  .test-card button:hover {
+    background-color: #7c145d;
+  }
+  
