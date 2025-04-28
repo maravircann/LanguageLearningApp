@@ -31,6 +31,7 @@ body {
   color: #1f1f1f;
 }
 
+/* Ilustrații */
 .illustration {
   width: 100%;
   height: auto;
@@ -42,13 +43,15 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px;
+  height: 80px;        
+  padding: 0 40px;     
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .logo {
-  height: 40px;
+  height: 120px;        
+  width: auto;         
 }
 
 .nav-links a {
@@ -80,13 +83,19 @@ body {
 
 /* Hero Section */
 .hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 0 20px;
+  min-height: calc(100vh - 80px); /* ajustăm pentru noua înălțime navbar */
   text-align: center;
-  padding: 80px 20px 60px;
   position: relative;
 }
 
 .hero h1 {
-  font-size: 3rem;
+  font-size: 5rem;
   color: #1a1a1a;
   margin-bottom: 10px;
 }
@@ -96,12 +105,12 @@ body {
 }
 
 .tagline {
-  font-size: 1.2rem;
-  color: #444;
+  font-size: 1.4rem;
+  color: #3f3f3f;
   margin-bottom: 40px;
 }
 
-/* Ilustrații */
+/* Ilustrații absolute */
 .illustration {
   position: absolute;
   max-width: 200px;
@@ -158,6 +167,12 @@ body {
   .navbar {
     flex-direction: column;
     align-items: flex-start;
+    height: auto;    /* revine la înălțime adaptivă */
+    padding: 20px 40px;
+  }
+
+  .logo {
+    height: 50px;    /* logo mai mic pe mobil */
   }
 
   .hero h1 {
@@ -172,4 +187,16 @@ body {
   .illustration {
     display: none;
   }
+}
+
+
+.illustration {
+  /* din alb → burgundy */
+  filter:
+  brightness(0)     /* face tot negru */
+  saturate(100%)    /* maximizează saturația */
+  sepia(60%)        /* pui ton roșcat */
+  hue-rotate(-45deg)/* ajustezi spre mov/burgundy */
+  brightness(90%)   /* mai închis puțin */
+  contrast(90%); 
 }

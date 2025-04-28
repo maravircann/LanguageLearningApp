@@ -9,6 +9,8 @@ const LoginForm = () => {
     password: ''
   });
 
+  const [error, setError] = useState('');
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -29,11 +31,12 @@ const LoginForm = () => {
         localStorage.setItem('token', data.token);
         navigate('/home');
       } else {
-        alert(data.message || 'Login failed');
+        setError(data.message || 'Login failed');
       }
 
     } catch (err) {
       console.error('Error logging in:', err);
+      setError('Server error. Please try again later.');
     }
   };
 
@@ -59,6 +62,7 @@ const LoginForm = () => {
             onChange={handleChange}
             required
           />
+          {error && <p className="error-message">{error}</p>}
           <button type="submit">Login</button>
         </form>
       </div>

@@ -2,7 +2,7 @@ import './HomePage.css';
 import { useNavigate } from 'react-router-dom';
 import workspace from '../assets/workspace.png';
 import announcement from '../assets/megaphone.png';
-import logo from '../assets/logo.png';
+import logo from '../assets/textLogo.png';
 
 
 const HomePage = () => {
@@ -24,10 +24,10 @@ const HomePage = () => {
       {/* Hero section */}
       <section className="hero">
         <div className="hero-content">
-          <img src={announcement} alt="Announcement" className="illustration left-illustration" />
+        {/*<img src={announcement} alt="Announcement" className="illustration left-illustration" />*/}
           <h1>Welcome to <span className="brand">LangLearn</span></h1>
           <p className="tagline">An intuitive platform to learn job-specific language fast and effectively.</p>
-        </div>
+        </div> 
 
         {/* Butoane centrale */}
         <div className="cta-buttons">
@@ -36,7 +36,7 @@ const HomePage = () => {
         </div>
 
         {/* Imagine decorativă dreapta */}
-        <img src={workspace} alt="Workspace Illustration" className="illustration right-illustration" />
+        {/*<img src={workspace} alt="Workspace Illustration" className="illustration right-illustration" />*/}
       </section>
     </div>
   );
