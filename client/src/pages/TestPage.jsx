@@ -62,6 +62,15 @@ const TestPage = () => {
 
   return (
     <div className="test-page">
+        <div className="progress-bar-container">
+  <div
+    className="progress-bar"
+    style={{
+      width: `${((currentIndex + (flipped ? 1 : 0)) / flashcards.length) * 100}%`,
+    }}
+  />
+</div>
+
       <Flashcard
         word={flashcards[currentIndex].word}
         flipped={flipped}
