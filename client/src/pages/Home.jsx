@@ -5,14 +5,36 @@ import TestCard from '../components/Tests/TestCard';
 import './Home.css'; 
 import logo from '../assets/textLogo.png';
 
-
 const Home = () => {
   const [lessons, setLessons] = useState([]);
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('language') || 'en');
+  const [selectedDomain, setSelectedDomain] = useState('');
+  const [domains, setDomains] = useState([]);
   const navigate = useNavigate();
 
+  // Fetch domains
+  useEffect(() => {
+    const fetchDomains = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch('http://localhost:5000/api/domains', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+        setDomains(data);
+      } catch (err) {
+        console.error('Error fetching domains:', err);
+      }
+    };
+
+    fetchDomains();
+  }, []);
+
+  // Fetch lessons and tests
   useEffect(() => {
     const fetchLessonsAndTests = async () => {
       try {
@@ -64,13 +86,20 @@ const Home = () => {
     localStorage.setItem('language', lang);
   };
 
+  const filteredLessons = selectedDomain
+    ? lessons.filter((lesson) => lesson.domeniu_id === parseInt(selectedDomain))
+    : lessons;
+
+  const filteredTests = selectedDomain
+    ? tests.filter((test) => test.domeniu_id === parseInt(selectedDomain))
+    : tests;
+
   if (loading) {
     return <div className="lesson-loading">Se încarcă lecțiile și testele...</div>;
   }
 
   return (
     <div className="home-container">
-      
       <nav className="navbar">
         <img src={logo} alt="Logo" className="logo" />
         <div className="navbar-links">
@@ -86,6 +115,19 @@ const Home = () => {
             <option value="ro">Română</option>
           </select>
 
+          <select
+            value={selectedDomain}
+            onChange={(e) => setSelectedDomain(e.target.value)}
+            className="domain-selector"
+          >
+            <option value="">All domains</option>
+            {domains.map((domain) => (
+              <option key={domain.id} value={domain.id}>
+                {domain.nume}
+              </option>
+            ))}
+          </select>
+
           <button onClick={handleProfileClick} className="profile-button">Profile</button>
         </div>
       </nav>
@@ -93,8 +135,8 @@ const Home = () => {
       <section>
         <h2>Your Lessons</h2>
         <div className="lesson-list">
-          {lessons.length > 0 ? (
-            lessons.map((lesson) => (
+          {filteredLessons.length > 0 ? (
+            filteredLessons.map((lesson) => (
               <LessonCard key={lesson.id} lesson={lesson} />
             ))
           ) : (
@@ -106,8 +148,8 @@ const Home = () => {
       <section>
         <h2>Your Flashcard Tests</h2>
         <div className="test-list">
-          {tests.length > 0 ? (
-            tests.map((test) => (
+          {filteredTests.length > 0 ? (
+            filteredTests.map((test) => (
               <TestCard key={test.id} test={test} />
             ))
           ) : (
