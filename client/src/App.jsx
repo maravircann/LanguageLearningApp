@@ -6,6 +6,10 @@ import ProtectedRoute from './components/Shared/ProtectedRoute';
 import Home from './pages/Home';
 import LessonPage from './pages/LessonPage';
 import TestPage from './pages/TestPage';
+import MedicinePage from './pages/domains/MedicinePage';
+import EngineeringPage from './pages/domains/EngineeringPage';
+import FinanceAccountingPage from './pages/domains/FinanceAccounting';
+import ConstructionArchitecturePage from './pages/domains/ConstructionArchitecture';
 function App() {
   return (
     <Router>
@@ -16,7 +20,10 @@ function App() {
         <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path="/lesson/:id" element={<ProtectedRoute><LessonPage /></ProtectedRoute>} />
         <Route path="/test/:id" element={<ProtectedRoute><TestPage /></ProtectedRoute>} />
-
+        <Route path="/domains/medicine" element={<MedicinePage />} />
+        <Route path="/domains/engineering" element={<EngineeringPage />} />
+        <Route path="/domains/finance&accounting" element={<FinanceAccountingPage />} />
+        <Route path="/domains/constructions&architecture" element={<ConstructionArchitecturePage />} />
       </Routes>
     </Router>
   );

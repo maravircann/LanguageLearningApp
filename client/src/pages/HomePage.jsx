@@ -5,6 +5,10 @@ import peopleGray from '../assets/peopleGray.png';
 const HomePage = () => {
 const navigate = useNavigate();
 
+const handleExplore = (domain) => {
+  navigate(`/domains/${domain}`);
+};
+
   return (
     <div className="homepage" id="home">
       {/* Navbar simplă */}
@@ -81,25 +85,28 @@ const navigate = useNavigate();
     <div className="domain-card">
       <div className="domain-icon">.</div>
       <h3>Engineering</h3>
-      <button className="domain-button">Explore</button>
+      <button className="domain-button" onClick={() => handleExplore('engineering')}>Explore</button>
     </div>
 
     <div className="domain-card">
       <div className="domain-icon">.</div>
       <h3>Medicine</h3>
-      <button className="domain-button">Explore</button>
+      <button className="domain-button" onClick={() => handleExplore('medicine')}>Explore</button>
+
     </div>
 
     <div className="domain-card">
       <div className="domain-icon">.</div>
-      <h3>Law</h3>
-      <button className="domain-button">Explore</button>
+      <h3>Finance & Accounting</h3>
+      <button className="domain-button" onClick={() => handleExplore('finance&accounting')}>Explore</button>
+
     </div>
 
     <div className="domain-card">
       <div className="domain-icon">.</div>
-      <h3>Business & Management</h3>
-      <button className="domain-button">Explore</button>
+      <h3>Construction & Architecture</h3>
+      <button className="domain-button" onClick={() => handleExplore('constructions&architecture')}>Explore</button>
+
     </div>
   </div>
       </section>
