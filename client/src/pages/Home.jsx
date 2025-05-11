@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import LessonCard from '../components/Lessons/LessonCard';
 import TestCard from '../components/Tests/TestCard';
 import './Home.css'; 
-import logo from '../assets/textLogo.png';
-
+import logoBlue from '../assets/logoBlue.png';
+import Sidebar from '../components/Shared/Sidebar';
+import TopNavbar from '../components/Shared/TopNavbar';
 const Home = () => {
   const [lessons, setLessons] = useState([]);
   const [tests, setTests] = useState([]);
@@ -78,7 +79,7 @@ const Home = () => {
   }, []);
 
   const handleProfileClick = () => {
-    navigate('/profile');
+    navigate('/profile'); 
   };
 
   const handleLanguageChange = (lang) => {
@@ -98,67 +99,48 @@ const Home = () => {
     return <div className="lesson-loading">Se încarcă lecțiile și testele...</div>;
   }
 
-  return (
-    <div className="home-container">
-      <nav className="navbar">
-        <img src={logo} alt="Logo" className="logo" />
-        <div className="navbar-links">
-          <select
-            value={selectedLanguage}
-            onChange={(e) => handleLanguageChange(e.target.value)}
-            className="language-selector"
-          >
-            <option value="en">English</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-            <option value="es">Español</option>
-            <option value="ro">Română</option>
-          </select>
+return (
+  <div className="page">
+    <TopNavbar />
 
-          <select
-            value={selectedDomain}
-            onChange={(e) => setSelectedDomain(e.target.value)}
-            className="domain-selector"
-          >
-            <option value="">All domains</option>
-            {domains.map((domain) => (
-              <option key={domain.id} value={domain.id}>
-                {domain.nume}
-              </option>
-            ))}
-          </select>
+    <div className="layout">
+      <Sidebar
+        selectedLanguage={selectedLanguage}
+        onLanguageChange={handleLanguageChange}
+      />
 
-          <button onClick={handleProfileClick} className="profile-button">Profile</button>
-        </div>
-      </nav>
+      <main className="main-content">
+        <section>
+          <h2>Your Lessons</h2>
+          <div className="lesson-list">
+            {filteredLessons.length > 0 ? (
+              filteredLessons.map((lesson) => (
+                <LessonCard key={lesson.id} lesson={lesson} />
+              ))
+            ) : (
+              <p>No lessons available.</p>
+            )}
+          </div>
+        </section>
 
-      <section>
-        <h2>Your Lessons</h2>
-        <div className="lesson-list">
-          {filteredLessons.length > 0 ? (
-            filteredLessons.map((lesson) => (
-              <LessonCard key={lesson.id} lesson={lesson} />
-            ))
-          ) : (
-            <p>No lessons available.</p>
-          )}
-        </div>
-      </section>
-
-      <section>
-        <h2>Your Flashcard Tests</h2>
-        <div className="test-list">
-          {filteredTests.length > 0 ? (
-            filteredTests.map((test) => (
-              <TestCard key={test.id} test={test} />
-            ))
-          ) : (
-            <p>No tests available.</p>
-          )}
-        </div>
-      </section>
+        <section>
+          <h2>Your Flashcard Tests</h2>
+          <div className="test-list">
+            {filteredTests.length > 0 ? (
+              filteredTests.map((test) => (
+                <TestCard key={test.id} test={test} />
+              ))
+            ) : (
+              <p>No tests available.</p>
+            )}
+          </div>
+        </section>
+      </main>
     </div>
-  );
+  </div>
+);
+
+
 };
 
 export default Home;
