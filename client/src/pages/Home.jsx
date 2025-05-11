@@ -18,8 +18,9 @@ const Home = () => {
   const userName = user?.name;
 
   const [domainName, setDomainName] = useState('');
-  
+  const [report, setReport] = useState(null);
 
+const [selectedTab, setSelectedTab] = useState("lessons");
   // Fetch lessons and tests
   useEffect(() => {
   const fetchData = async () => {
@@ -46,6 +47,15 @@ const Home = () => {
           'Content-Type': 'application/json',
         },
       });
+
+      // Fetch user report
+      const reportRes = await fetch(`http://localhost:5000/api/report/${user.id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });   
+
+      if (!reportRes.ok) throw new Error('Failed fetching report');
+        const reportData = await reportRes.json();
+        setReport(reportData);
 
       // Fetch domain name
       const domainRes = await fetch(`http://localhost:5000/api/domains/${user.domain_id}`, {
@@ -105,31 +115,74 @@ return (
         Welcome, {userName}! Keep building your professional language skills in the field of {domainName}.
       </h2>
 
+        {report && (
+  <div className="progress-summary">
+    <div className="progress-card">
+      <h3>Total Progress</h3>
+      <p>{report.procent_progres || 0}%</p>
+      <div className="progress-bar-home">
+        <div className="filled" style={{ width: `${report.procent_progres || 0}%` }}></div>
+
+      </div>
+    </div>
+
+    <div className="progress-card">
+      <h3>Lessons Completed</h3>
+      <p>{report.nr_lectii_efectuate || 0}</p>
+    </div>
+
+    <div className="progress-card">
+      <h3>Flashcards Learned</h3>
+      <p>{report.nr_flashcarduri_invățate || 0}</p>
+    </div>
+  </div>
+)}
+  <div className="main-lessons-tests">
+        <div className="tab-list">
+        <button
+          className={selectedTab === "lessons" ? "tab active" : "tab"}
+          onClick={() => setSelectedTab("lessons")}
+        >
+          Recent Lessons
+        </button>
+        <button
+          className={selectedTab === "flashcards" ? "tab active" : "tab"}
+          onClick={() => setSelectedTab("flashcards")}
+        >
+          Recent Flashcards
+        </button>
+      </div>
+
+      {selectedTab === "lessons" && (
         <section>
-          <h2>Your Lessons</h2>
+          <h2>Recent Lessons</h2>
           <div className="lesson-list">
             {filteredLessons.length > 0 ? (
-              filteredLessons.map((lesson) => (
+              filteredLessons.slice(0, 3).map((lesson) => (
                 <LessonCard key={lesson.id} lesson={lesson} />
               ))
             ) : (
-              <p>No lessons available.</p>
+              <p>Nu există lecții disponibile.</p>
             )}
           </div>
         </section>
+      )}
 
+      {selectedTab === "flashcards" && (
         <section>
-          <h2>Your Flashcard Tests</h2>
+          <h2>Recent Flashcards</h2>
           <div className="test-list">
             {filteredTests.length > 0 ? (
-              filteredTests.map((test) => (
+              filteredTests.slice(0, 3).map((test) => (
                 <TestCard key={test.id} test={test} />
               ))
             ) : (
-              <p>No tests available.</p>
+              <p>Nu există teste disponibile.</p>
             )}
           </div>
         </section>
+      )}
+    </div>
       </main>
     </div>
   </div>
