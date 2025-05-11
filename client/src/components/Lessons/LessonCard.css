@@ -14,7 +14,7 @@
   }
   
   .lesson-card h2 {
-    color: #6d0f37;
+    color: #1c224e;
     margin-bottom: 10px;
   }
   
@@ -25,7 +25,7 @@
   }
   
   .lesson-card button {
-    background-color: #6d0f37;
+    background-color: #1D3557;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -35,6 +35,6 @@
   }
   
   .lesson-card button:hover {
-    background-color: #91164f;
+    background-color: #1c224e;
   }
   

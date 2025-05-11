@@ -1,19 +1,25 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import logoBlue from '../../assets/logoBlue.png'; 
-
+import './TopNavbar.css'; 
 const TopNavbar = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="navbar">
+    <nav className="top-navbar">
             <img src={logoBlue} alt="Logo" className="logo" />
             <div className="nav-links">
-              <a href="#home">Dashboard</a>
-              <a href="#domains">Lessons</a>
-              <a href="#about">Flashcards</a>
+              <a href="/home">Dashboard</a>
+              <a href="/lessons">Lessons</a>
+              <a href="/tests">Flashcards</a>
             </div>
-          </nav>
+            <div className="navbar-right">
+              <button className="profile-btn" onClick={() => navigate('/profile')}>
+                Profile
+              </button>
+            </div>
+    </nav>
+    
   );
 };
 

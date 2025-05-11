@@ -29,6 +29,12 @@ const LoginForm = () => {
 
       if (res.ok) {
         localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify({
+  id: data.id,
+  name: data.name,
+  email: data.email,
+  domain_id: data.domain_id
+}));
         navigate('/home');
       } else {
         setError(data.message || 'Login failed');

@@ -2,29 +2,47 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import pool from '../../db.js'
 
-const login = async(req, res, next)=>{
-    try{
-        const {email, password} = req.body;
-        const result=await pool.query("SELECT * FROM users WHERE email = $1 LIMIT 1", [email]);
-        const user = result.rows[0];
-        
-        if (!user) {
-            return res.status(401).json({ message: 'Invalid email or password' });
-        }
+const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
 
-        const isPasswordValid= await bcrypt.compare(password, user.password);
-        if(!isPasswordValid){
-            return res.status(401).json({ message: 'Invalid email or password' });
-        }
+    const result = await pool.query(
+      "SELECT id, name, email, password, domain_id FROM users WHERE email = $1 LIMIT 1",
+      [email]
+    );
 
-        const token= jwt.sign({id: user.id}, process.env.JWT_SECRET, { expiresIn: '1h' });
-        await pool.query("UPDATE users SET token = $1 WHERE id = $2", [token, user.id]);
+    const user = result.rows[0];
 
-        res.status(200).json({ token, email: user.email, id: user.id, type: user.type });
-    }catch(err){
-        next(err);
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid email or password' });
     }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    const token = jwt.sign(
+      { id: user.id, domain_id: user.domain_id },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    await pool.query("UPDATE users SET token = $1 WHERE id = $2", [token, user.id]);
+
+    res.status(200).json({
+      token,
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      domain_id: user.domain_id
+    });
+
+  } catch (err) {
+    next(err);
+  }
 };
+
 
 const logout= async(req, res, next)=>{
     try {
@@ -49,7 +67,7 @@ const logout= async(req, res, next)=>{
 const register = async(req, res, next)=>{
     try {
         console.log("body received",req.body);
-        const {name, email, password} =req.body;
+        const {name, email, password, domain_id} =req.body;
         if (!name || !email || !password) {
             return res.status(400).json({ message: "All fields are required" });
           }
@@ -59,8 +77,8 @@ const register = async(req, res, next)=>{
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = await pool.query(
-            "INSERT INTO users (name, email, password, token) VALUES ($1, $2, $3, NULL) RETURNING id, name, email",
-            [name, email, hashedPassword]
+            "INSERT INTO users (name, email, password, token, domain_id) VALUES ($1, $2, $3, NULL, $4) RETURNING id, name, email, domain_id",
+            [name, email, hashedPassword, domain_id]
         );
 
         await pool.query(

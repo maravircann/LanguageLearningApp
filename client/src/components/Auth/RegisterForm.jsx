@@ -7,7 +7,8 @@ const RegisterForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    password: ''
+    password: '',
+    domain_id: ''
   });
 
   const [error, setError] = useState('');
@@ -56,6 +57,19 @@ const RegisterForm = () => {
           <input type="text" name="name" placeholder="Name" onChange={handleChange} required />
           <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
           <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+          <select
+          className="form-input"
+    name="domain_id"
+    value={formData.domain_id}
+    onChange={handleChange}
+    required
+  >
+  <option value=""> Select a domain: </option>
+  <option value="1">Medicine</option>
+  <option value="2">Egineering</option>
+  <option value="3">Finance & Accounting</option>
+  <option value="4">Construction & Architecture</option>
+</select>
           {error && <p className="error-message">{error}</p>}
           <button type="submit">Sign Up</button>
         </form>

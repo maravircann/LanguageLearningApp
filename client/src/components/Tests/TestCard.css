@@ -13,7 +13,7 @@
   
   .test-card h2 {
     font-size: 1.5rem;
-    color: #5A0A45;
+    color: #1D3557;
   }
   
   .test-card p {
@@ -24,7 +24,7 @@
   .test-card button {
     margin-top: 1rem;
     padding: 0.5rem 1rem;
-    background-color: #5A0A45;
+    background-color: #1D3557;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -34,6 +34,6 @@
   }
   
   .test-card button:hover {
-    background-color: #7c145d;
+    background-color: #1c224e;
   }
   

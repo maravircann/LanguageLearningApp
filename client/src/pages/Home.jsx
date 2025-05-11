@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LessonCard from '../components/Lessons/LessonCard';
 import TestCard from '../components/Tests/TestCard';
 import './Home.css'; 
-import logoBlue from '../assets/logoBlue.png';
+
 import Sidebar from '../components/Shared/Sidebar';
 import TopNavbar from '../components/Shared/TopNavbar';
 const Home = () => {
@@ -11,89 +11,80 @@ const Home = () => {
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('language') || 'en');
-  const [selectedDomain, setSelectedDomain] = useState('');
-  const [domains, setDomains] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch domains
-  useEffect(() => {
-    const fetchDomains = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:5000/api/domains', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await res.json();
-        setDomains(data);
-      } catch (err) {
-        console.error('Error fetching domains:', err);
-      }
-    };
+  const user = JSON.parse(localStorage.getItem('user'));
+  const domainId = user?.domain_id;
+  const userName = user?.name;
 
-    fetchDomains();
-  }, []);
+  const [domainName, setDomainName] = useState('');
+  
 
   // Fetch lessons and tests
   useEffect(() => {
-    const fetchLessonsAndTests = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          console.error('Token missing from localStorage.');
-          return;
-        }
-
-        const lessonsRes = await fetch('http://localhost:5000/api/lessons', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        const testsRes = await fetch('http://localhost:5000/api/tests', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!lessonsRes.ok || !testsRes.ok) {
-          throw new Error('Failed fetching lessons or tests');
-        }
-
-        const lessonsData = await lessonsRes.json();
-        const testsData = await testsRes.json();
-
-        setLessons(lessonsData);
-        setTests(testsData);
-      } catch (error) {
-        console.error('Error fetching lessons and tests:', error);
-      } finally {
-        setLoading(false);
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!token || !user) {
+        console.error('Token or user info missing from localStorage.');
+        return;
       }
-    };
 
-    fetchLessonsAndTests();
-  }, []);
+      // Fetch lessons
+      const lessonsRes = await fetch('http://localhost:5000/api/lessons', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
-  const handleProfileClick = () => {
-    navigate('/profile'); 
+      // Fetch tests
+      const testsRes = await fetch('http://localhost:5000/api/tests', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // Fetch domain name
+      const domainRes = await fetch(`http://localhost:5000/api/domains/${user.domain_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!lessonsRes.ok || !testsRes.ok || !domainRes.ok) {
+        throw new Error('Failed fetching lessons, tests, or domain');
+      }
+
+      const lessonsData = await lessonsRes.json();
+      const testsData = await testsRes.json();
+      const domainData = await domainRes.json();
+
+      setLessons(lessonsData);
+      setTests(testsData);
+      setDomainName(domainData.name); // 👈 setează numele domeniului
+
+    } catch (error) {
+      console.error('Error fetching data in Home:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  fetchData();
+}, []);
+
+
+ 
   const handleLanguageChange = (lang) => {
     setSelectedLanguage(lang);
     localStorage.setItem('language', lang);
   };
 
-  const filteredLessons = selectedDomain
-    ? lessons.filter((lesson) => lesson.domeniu_id === parseInt(selectedDomain))
-    : lessons;
-
-  const filteredTests = selectedDomain
-    ? tests.filter((test) => test.domeniu_id === parseInt(selectedDomain))
-    : tests;
+  const filteredLessons = lessons.filter((lesson) => lesson.domain_id === domainId);
+  const filteredTests = tests.filter((test) => test.domain_id === domainId);
 
   if (loading) {
     return <div className="lesson-loading">Se încarcă lecțiile și testele...</div>;
@@ -110,6 +101,10 @@ return (
       />
 
       <main className="main-content">
+        <h2 className="welcome-message">
+        Welcome, {userName}! Keep building your professional language skills in the field of {domainName}.
+      </h2>
+
         <section>
           <h2>Your Lessons</h2>
           <div className="lesson-list">
