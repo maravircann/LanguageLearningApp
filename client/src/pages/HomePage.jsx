@@ -75,7 +75,7 @@ const handleExplore = (domain) => {
 
         
       </section>
-
+    
 
       <section className="domains-section" id="domains">
   <h2 className="domains-title">Available domains</h2>

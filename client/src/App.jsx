@@ -10,6 +10,7 @@ import MedicinePage from './pages/domains/MedicinePage';
 import EngineeringPage from './pages/domains/EngineeringPage';
 import FinanceAccountingPage from './pages/domains/FinanceAccounting';
 import ConstructionArchitecturePage from './pages/domains/ConstructionArchitecture';
+import AllLessonsPage from './pages/AllLessonsPage';
 function App() {
   return (
     <Router>
@@ -24,6 +25,8 @@ function App() {
         <Route path="/domains/engineering" element={<EngineeringPage />} />
         <Route path="/domains/finance&accounting" element={<FinanceAccountingPage />} />
         <Route path="/domains/constructions&architecture" element={<ConstructionArchitecturePage />} />
+        <Route path="/lessons" element={<AllLessonsPage />} />
+
       </Routes>
     </Router>
   );

@@ -112,77 +112,82 @@ return (
 
       <main className="main-content">
         <h2 className="welcome-message">
-        Welcome, {userName}! Keep building your professional language skills in the field of {domainName}.
-      </h2>
+          Welcome, {userName}! Keep building your professional language skills
+          in the field of {domainName}.
+        </h2>
 
         {report && (
-  <div className="progress-summary">
-    <div className="progress-card">
-      <h3>Total Progress</h3>
-      <p>{report.procent_progres || 0}%</p>
-      <div className="progress-bar-home">
-        <div className="filled" style={{ width: `${report.procent_progres || 0}%` }}></div>
+          <div className="progress-summary">
+            <div className="progress-card">
+              <h3>Total Progress</h3>
+              <p>{report.procent_progres || 0}%</p>
+              <div className="progress-bar-home">
+                <div
+                  className="filled"
+                  style={{ width: `${report.procent_progres || 0}%` }}
+                ></div>
+              </div>
+            </div>
 
-      </div>
-    </div>
+            <div className="progress-card">
+              <h3>Lessons Completed</h3>
+              <p>{report.nr_lectii_efectuate || 0}</p>
+            </div>
 
-    <div className="progress-card">
-      <h3>Lessons Completed</h3>
-      <p>{report.nr_lectii_efectuate || 0}</p>
-    </div>
-
-    <div className="progress-card">
-      <h3>Flashcards Learned</h3>
-      <p>{report.nr_flashcarduri_invățate || 0}</p>
-    </div>
-  </div>
-)}
-  <div className="main-lessons-tests">
-        <div className="tab-list">
-        <button
-          className={selectedTab === "lessons" ? "tab active" : "tab"}
-          onClick={() => setSelectedTab("lessons")}
-        >
-          Recent Lessons
-        </button>
-        <button
-          className={selectedTab === "flashcards" ? "tab active" : "tab"}
-          onClick={() => setSelectedTab("flashcards")}
-        >
-          Recent Flashcards
-        </button>
-      </div>
-
-      {selectedTab === "lessons" && (
-        <section>
-          <h2>Recent Lessons</h2>
-          <div className="lesson-list">
-            {filteredLessons.length > 0 ? (
-              filteredLessons.slice(0, 3).map((lesson) => (
-                <LessonCard key={lesson.id} lesson={lesson} />
-              ))
-            ) : (
-              <p>Nu există lecții disponibile.</p>
-            )}
+            <div className="progress-card">
+              <h3>Flashcards Learned</h3>
+              <p>{report.nr_flashcarduri_invățate || 0}</p>
+            </div>
           </div>
-        </section>
-      )}
-
-      {selectedTab === "flashcards" && (
-        <section>
-          <h2>Recent Flashcards</h2>
-          <div className="test-list">
-            {filteredTests.length > 0 ? (
-              filteredTests.slice(0, 3).map((test) => (
-                <TestCard key={test.id} test={test} />
-              ))
-            ) : (
-              <p>Nu există teste disponibile.</p>
-            )}
+        )}
+        <div className="main-lessons-tests">
+          <div className="tab-list">
+            <button
+              className={selectedTab === "lessons" ? "tab active" : "tab"}
+              onClick={() => setSelectedTab("lessons")}
+            >
+              Recent Lessons
+            </button>
+            <button
+              className={selectedTab === "flashcards" ? "tab active" : "tab"}
+              onClick={() => setSelectedTab("flashcards")}
+            >
+              Recent Flashcards
+            </button>
           </div>
-        </section>
-      )}
-    </div>
+
+          {selectedTab === "lessons" && (
+            <section>
+              <h2>Recent Lessons</h2>
+              <div className="lesson-list">
+                {filteredLessons.length > 0 ? (
+                  filteredLessons
+                    .slice(0, 3)
+                    .map((lesson) => (
+                      <LessonCard key={lesson.id} lesson={lesson} />
+                    ))
+                ) : (
+                  <p>Nu există lecții disponibile.</p>
+                )}
+              </div>
+            </section>
+          )}
+
+          {selectedTab === "flashcards" && (
+            <section>
+              <h2>Recent Flashcards</h2>
+              <div className="test-list">
+                {filteredTests.length > 0 ? (
+                  filteredTests
+                    .slice(0, 3)
+                    .map((test) => <TestCard key={test.id} test={test} />)
+                ) : (
+                  <p>Nu există teste disponibile.</p>
+                )}
+              </div>
+            </section>
+          )}
+        </div>
       </main>
     </div>
   </div>
