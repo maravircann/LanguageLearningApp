@@ -1,0 +1,85 @@
+.profile-page .subtitle {
+  margin-top: -0.5rem;
+  color: #555;
+}
+
+.profile-grid {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.profile-summary, .profile-info {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.avatar-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.avatar-initial {
+  font-size: 2rem;
+  color: #444;
+}
+
+.progress-section {
+  margin: 1rem 0;
+}
+
+.progress-bar-home {
+  height: 8px;
+  background: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.progress-bar-home .filled {
+  height: 100%;
+  background: #1D3557;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  text-align: center;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.profile-info .info-pair {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+}
+
+.section-divider {
+  margin: 1.5rem 0 1rem;
+  border-top: 1px solid #ddd;
+}
+
+.progress-breakdown .bar {
+  height: 6px;
+  background: #eee;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.progress-breakdown .bar .filled {
+  height: 100%;
+  background: #1D3557;
+}

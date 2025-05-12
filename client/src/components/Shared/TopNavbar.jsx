@@ -11,7 +11,7 @@ const TopNavbar = () => {
             <div className="nav-links">
               <a href="/home">Dashboard</a>
               <a href="/lessons">Lessons</a>
-              <a href="/tests">Flashcards</a>
+              <a href="/flashcards">Flashcards</a>
             </div>
             <div className="navbar-right">
               <button className="profile-btn" onClick={() => navigate('/profile')}>

@@ -41,12 +41,6 @@ const Sidebar = ({ selectedLanguage, onLanguageChange }) => {
     <FaClipboardList /> Flashcards
   </button>
 
-  <button
-    className={`sidebar-btn ${isActive('/tests') ? 'active' : ''}`}
-    onClick={() => navigate('/tests')}
-  >
-    <FaClipboardList /> Tests
-  </button>
 
   <button
     className={`sidebar-btn ${isActive('/profile') ? 'active' : ''}`}

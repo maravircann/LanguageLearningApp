@@ -11,6 +11,8 @@ import EngineeringPage from './pages/domains/EngineeringPage';
 import FinanceAccountingPage from './pages/domains/FinanceAccounting';
 import ConstructionArchitecturePage from './pages/domains/ConstructionArchitecture';
 import AllLessonsPage from './pages/AllLessonsPage';
+import AllTestsPage from './pages/AllTestsPage';
+import ProfilePage from './pages/ProfilePage';
 function App() {
   return (
     <Router>
@@ -26,7 +28,8 @@ function App() {
         <Route path="/domains/finance&accounting" element={<FinanceAccountingPage />} />
         <Route path="/domains/constructions&architecture" element={<ConstructionArchitecturePage />} />
         <Route path="/lessons" element={<AllLessonsPage />} />
-
+        <Route path="/flashcards" element={<AllTestsPage />} />
+        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
       </Routes>
     </Router>
   );
