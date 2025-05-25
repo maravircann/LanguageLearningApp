@@ -5,7 +5,6 @@ const getAllLessons = async (req, res) => {
   try {
     const { domain_id } = req.query;
 
-    // dacă există domeniu selectat, filtrează
     let query = 'SELECT * FROM lessons';
     const params = [];
 
@@ -14,6 +13,9 @@ const getAllLessons = async (req, res) => {
       params.push(domain_id);
     }
 
+    
+    query += params.length > 0 ? ' ORDER BY id ASC' : ' ORDER BY id ASC';
+
     const result = await pool.query(query, params);
     res.json(result.rows);
   } catch (err) {
@@ -21,6 +23,7 @@ const getAllLessons = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 const getLessonById = async (req, res) => {
   try {
@@ -38,4 +41,21 @@ const getLessonById = async (req, res) => {
   }
 };
 
-export default{ getAllLessons, getLessonById };
+const completeLesson = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updateQuery = 'UPDATE lessons SET completed = TRUE WHERE id = $1 RETURNING *';
+    const result = await pool.query(updateQuery, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Lesson not found' });
+    }
+
+    res.json({ message: 'Lesson marked as completed', lesson: result.rows[0] });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+export default{ getAllLessons, getLessonById, completeLesson };

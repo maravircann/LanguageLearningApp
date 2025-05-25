@@ -1,20 +1,55 @@
-.lesson-page {
-    padding: 40px;
-    text-align: center;
-  }
-  
-  .words-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
-  }
-  
-  .words-grid > div {
-    padding: 20px;
-    background-color: #f8f8f8;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    font-size: 1.2rem;
-  }
-  
+.lesson-tablist {
+  display: flex;
+  gap: 1rem;
+  background-color: #f5f5f5;
+  padding: 0.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.lesson-tablist button {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #444;
+  transition: 0.2s;
+}
+
+.lesson-tablist .active {
+  background-color: #fff;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+.word-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.word-item {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.finish-lesson-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+}
+
+.finish-lesson-btn:hover {
+  background-color: #45a049;
+}

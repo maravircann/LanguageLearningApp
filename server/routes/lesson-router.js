@@ -7,5 +7,5 @@ const router = express.Router();
 // protejează ambele rute cu JWT middleware
 router.get('/lessons', middleware.authMiddleware, controllers.lessons.getAllLessons);
 router.get('/lessons/:id', middleware.authMiddleware, controllers.lessons.getLessonById);
-
+router.put('/lessons/:id/complete', middleware.authMiddleware, controllers.lessons.completeLesson);
 export default router;

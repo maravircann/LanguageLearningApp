@@ -1,18 +1,26 @@
-const translateText = async (text, targetLang) => {
-    const response = await fetch('https://libretranslate.de/translate', {
-      method: 'POST',
+export const translateText = async (text, targetLang) => {
+  try {
+    const response = await fetch("https://libretranslate.com/translate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         q: text,
-        source: 'en',
+        source: "en",
         target: targetLang,
-        format: 'text'
+        format: "text",
       }),
-      headers: { 'Content-Type': 'application/json' }
     });
-  
+
+    if (!response.ok) throw new Error("Translation failed");
+
     const data = await response.json();
     return data.translatedText;
-  };
-  
-  export default translateText;
-  
+  } catch (error) {
+    console.error("Translation error:", error);
+    return "Translation error";
+  }
+};
+
+
