@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import LessonCard from '../components/Lessons/LessonCard';
 import TestCard from '../components/Tests/TestCard';
 import './Home.css'; 
@@ -12,7 +12,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('language') || 'en');
   const navigate = useNavigate();
-
+  const location = useLocation();
   const user = JSON.parse(localStorage.getItem('user'));
   const domainId = user?.domain_id;
   const userName = user?.name;
@@ -74,7 +74,7 @@ const [selectedTab, setSelectedTab] = useState("lessons");
 
       setLessons(lessonsData);
       setTests(testsData);
-      setDomainName(domainData.name); // 👈 setează numele domeniului
+      setDomainName(domainData.name); 
 
     } catch (error) {
       console.error('Error fetching data in Home:', error);
@@ -84,10 +84,10 @@ const [selectedTab, setSelectedTab] = useState("lessons");
   };
 
   fetchData();
-}, []);
+}, [location.state?.refreshReport]);
 
 
- 
+  
   const handleLanguageChange = (lang) => {
     setSelectedLanguage(lang);
     localStorage.setItem('language', lang);
@@ -97,7 +97,7 @@ const [selectedTab, setSelectedTab] = useState("lessons");
   const filteredTests = tests.filter((test) => test.domain_id === domainId);
 
   if (loading) {
-    return <div className="lesson-loading">Se încarcă lecțiile și testele...</div>;
+    return <div className="lesson-loading">Lessons and Tests loading...</div>;
   }
 
 return (
@@ -120,23 +120,23 @@ return (
           <div className="progress-summary">
             <div className="progress-card">
               <h3>Total Progress</h3>
-              <p>{report.procent_progres || 0}%</p>
+              <p>{report.progress_percent || 0}%</p>
               <div className="progress-bar-home">
                 <div
                   className="filled"
-                  style={{ width: `${report.procent_progres || 0}%` }}
+                  style={{ width: `${report.progress_percent || 0}%` }}
                 ></div>
               </div>
             </div>
 
             <div className="progress-card">
               <h3>Lessons Completed</h3>
-              <p>{report.nr_lectii_efectuate || 0}</p>
+              <p>{report.lessons_completed || 0}</p>
             </div>
 
             <div className="progress-card">
               <h3>Flashcards Learned</h3>
-              <p>{report.nr_flashcarduri_invățate || 0}</p>
+              <p>{report.tests_completed || 0}</p>
             </div>
           </div>
         )}

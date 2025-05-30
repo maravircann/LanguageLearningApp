@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.get('/tests', middleware.authMiddleware, controllers.tests.getAllTests);
 router.get('/tests/:id', middleware.authMiddleware, controllers.tests.getTestById);
+router.put('/tests/:id/complete', middleware.authMiddleware, controllers.tests.completeTest);
 
 export default router;

@@ -27,40 +27,36 @@ const LessonPage = () => {
   const handleFinishLesson = async () => {
   try {
     const token = localStorage.getItem("token");
-
     const endTime = Date.now();
-      const timeSpentInMs = endTime - startTime;
-      const timeSpentInMinutes = Math.floor(timeSpentInMs / 60000); 
+    const timeSpentInMinutes = Math.floor((endTime - startTime) / 60000);
 
-    // Marchează lecția ca finalizată
     const resLesson = await fetch(`http://localhost:5000/api/lessons/${id}/complete`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        userId: user.id,
+        new_lesson_time: timeSpentInMinutes  // 🔥 Trimitem și timpul petrecut
+      }),
     });
 
-    if (!resLesson.ok) throw new Error("Failed to mark lesson as completed");
+    if (!resLesson.ok) {
+      const errorData = await resLesson.json();
+      alert(errorData.message || "Failed to complete the lesson.");
+      return;
+    }
 
-    // 🔥 Modificare aici: trimitem user_id în URL
-    const resReport = await fetch(`http://localhost:5000/api/report/lesson/${user.id}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ new_lesson_time: timeSpentInMinutes }), // exemplu timp (în minute)
-    });
-
-    if (!resReport.ok) throw new Error("Failed to update report");
-
-    navigate("/lessons");
+    // Navigăm către pagina de lecții și forțăm refresh raport
+    navigate("/lessons", { state: { refreshReport: true } });
   } catch (error) {
     console.error("Error finishing lesson:", error);
     alert("A apărut o eroare la finalizarea lecției.");
   }
 };
+
+
 
 
   const TranslationRenderer = ({ word }) => {
@@ -181,7 +177,7 @@ const LessonPage = () => {
           </div>
 
           {loading ? (
-            <p>Se încarcă lecția...</p>
+            <p>Lesson loading...</p>
           ) : (
             <>
               {activeTab === "content" && (
@@ -210,7 +206,7 @@ const LessonPage = () => {
         </main>
       </div>
 
-      {/* 🔥 Buton Finish Lesson poziționat în dreapta jos */}
+      
       <button
         className="finish-lesson-btn"
         onClick={handleFinishLesson}

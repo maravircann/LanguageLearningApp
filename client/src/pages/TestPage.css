@@ -54,3 +54,37 @@
     transition: width 0.5s ease-in-out;
   }
   
+  
+.test-controls {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.finish-button, .retry-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.finish-button {
+  background-color: #1D3557;
+  color: #fff;
+}
+
+.finish-button:hover {
+  background-color: #123456;
+}
+
+.retry-button {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.retry-button:hover {
+  background-color: #ddd;
+}

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Flashcard from '../components/Tests/Flashcard';
-import './TestPage.css'; // dacă vrei să adaugi puțin stil
+import './TestPage.css';
+import { useNavigate } from "react-router-dom";
 
 const TestPage = () => {
   const { id } = useParams();
@@ -10,6 +11,16 @@ const TestPage = () => {
   const [flipped, setFlipped] = useState(false);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [startTime, setStartTime] = useState(null);
+  const [user, setUser] = useState(null); // presupunem că userul e obținut local
+  const navigate = useNavigate();
+  useEffect(() => {
+    setStartTime(Date.now()); // setează momentul de start al testului
+
+    // Simulează obținerea user-ului curent (poate fi înlocuit cu context sau API)
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) setUser(storedUser);
+  }, []);
 
   useEffect(() => {
     const fetchFlashcards = async () => {
@@ -47,6 +58,44 @@ const TestPage = () => {
     }
   };
 
+  const handleRetry = () => {
+    setCurrentIndex(0);
+    setScore(0);
+    setFlipped(false);
+    setShowResult(false);
+    setStartTime(Date.now()); // resetăm timpul
+  };
+
+ const handleFinishTest = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const endTime = Date.now();
+    const timeSpentInMinutes = Math.floor((endTime - startTime) / 60000);
+    const mistakes = flashcards.length - score;
+
+    const res = await fetch(`http://localhost:5000/api/tests/${id}/complete`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user.id,
+        new_test_time: timeSpentInMinutes,
+        mistakes: mistakes,
+      }),
+    });
+
+    if (!res.ok) throw new Error("Failed to complete test");
+
+    navigate("/flashcards", { state: { refreshReport: true } }); 
+  } catch (error) {
+    console.error("Error finishing test:", error);
+    alert("A apărut o eroare la finalizarea testului.");
+  }
+};
+
+
   if (flashcards.length === 0) {
     return <div className="loading">Loading flashcards...</div>;
   }
@@ -56,26 +105,30 @@ const TestPage = () => {
       <div className="result-container">
         <h2>Test completed!</h2>
         <p>You answered correctly {score} out of {flashcards.length} flashcards!</p>
+        <button className="finish-button" onClick={handleFinishTest}>Finish Test</button>
+        <button className="retry-button" onClick={handleRetry}>Retry</button>
+        
       </div>
     );
   }
 
   return (
     <div className="test-page">
-        <div className="progress-bar-container">
-  <div
-    className="progress-bar"
-    style={{
-      width: `${((currentIndex + (flipped ? 1 : 0)) / flashcards.length) * 100}%`,
-    }}
-  />
-</div>
+      <div className="progress-bar-container">
+        <div
+          className="progress-bar"
+          style={{
+            width: `${((currentIndex + (flipped ? 1 : 0)) / flashcards.length) * 100}%`,
+          }}
+        />
+      </div>
 
       <Flashcard
         word={flashcards[currentIndex].word}
         flipped={flipped}
         handleFlip={handleFlip}
       />
+
       {!flipped ? (
         <button className="show-answer-button" onClick={handleFlip}>Show Answer</button>
       ) : (
@@ -84,8 +137,14 @@ const TestPage = () => {
           <button className="wrong-button" onClick={() => handleAnswer(false)}>I got it wrong</button>
         </div>
       )}
+
       <div className="progress">
         Flashcard {currentIndex + 1} / {flashcards.length}
+      </div>
+
+      <div className="test-controls">
+        <button className="finish-button" onClick={handleFinishTest}>Finish Test</button>
+        <button className="retry-button" onClick={handleRetry}>Retry</button>
       </div>
     </div>
   );
