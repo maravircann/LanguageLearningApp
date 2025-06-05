@@ -13,6 +13,7 @@ import ConstructionArchitecturePage from './pages/domains/ConstructionArchitectu
 import AllLessonsPage from './pages/AllLessonsPage';
 import AllTestsPage from './pages/AllTestsPage';
 import ProfilePage from './pages/ProfilePage';
+import ReportPage from './pages/ReportPage';
 function App() {
   return (
     <Router>
@@ -30,6 +31,9 @@ function App() {
         <Route path="/lessons" element={<AllLessonsPage />} />
         <Route path="/flashcards" element={<AllTestsPage />} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+        <Route path="/report" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
+       
+        <Route path="*" element={<div>Page not found</div>} />
       </Routes>
     </Router>
   );

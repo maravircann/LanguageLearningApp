@@ -160,22 +160,17 @@ const updateAfterTest = async (req, res) => {
   const updateAfterLesson = async (req, res) => {
   try {
     const { user_id } = req.params;
-    const { new_lesson_time, lesson_id } = req.body;
-
-    // Verificăm dacă lecția e deja finalizată
-    const lessonCheck = await pool.query('SELECT completed FROM lessons WHERE id = $1', [lesson_id]);
-    if (lessonCheck.rows.length === 0 || !lessonCheck.rows[0].completed) {
-      return res.status(400).json({ message: 'Lesson not marked as completed yet.' });
-    }
+    const { new_lesson_time } = req.body;
 
     const reportResult = await pool.query('SELECT * FROM reports WHERE user_id = $1', [user_id]);
     if (reportResult.rows.length === 0) {
       return res.status(404).json({ message: 'Report not found' });
     }
-
     const report = reportResult.rows[0];
-    const updatedLessonsCompleted = report.lessons_completed + 1;
-    const updatedAvgLessonTime = (report.avg_lesson_time * report.lessons_completed + new_lesson_time) / updatedLessonsCompleted;
+
+    // 🔥 Nu mai incrementăm lessons_completed aici!
+    const updatedAvgLessonTime =
+      (report.avg_lesson_time * report.lessons_completed + new_lesson_time) / (report.lessons_completed || 1);
     const updatedTotalTime = report.total_time + new_lesson_time;
 
     const totalLessons = parseInt((await pool.query('SELECT COUNT(*) FROM lessons')).rows[0].count);
@@ -183,24 +178,24 @@ const updateAfterTest = async (req, res) => {
     const totalItems = totalLessons + totalTests;
 
     const progressPercent = totalItems > 0
-      ? ((updatedLessonsCompleted + report.tests_completed) / totalItems) * 100
+      ? ((report.lessons_completed + report.tests_completed) / totalItems) * 100
       : 0;
 
     await pool.query(`
       UPDATE reports SET
-        lessons_completed = $1,
-        avg_lesson_time = $2,
-        total_time = $3,
-        progress_percent = $4
-      WHERE user_id = $5
-    `, [updatedLessonsCompleted, updatedAvgLessonTime, updatedTotalTime, progressPercent, user_id]);
+        avg_lesson_time = $1,
+        total_time = $2,
+        progress_percent = $3
+      WHERE user_id = $4
+    `, [updatedAvgLessonTime, updatedTotalTime, progressPercent, user_id]);
 
-    res.status(200).json({ message: 'Report updated after lesson', report: reportResult.rows[0] });
+    res.status(200).json({ message: 'Report updated after lesson', report: report });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 
  const updateProgressPercent = async (req, res) => {
@@ -247,12 +242,63 @@ const updateAfterTest = async (req, res) => {
   }
 };
 
-  
+
+const generateAIReport = async (req, res) => {
+  try {
+    const { user_id } = req.params;
+
+    if (req.user.id !== parseInt(user_id)) {
+      return res.status(403).json({ message: 'Forbidden: Access denied' });
+    }
+
+    const result = await pool.query('SELECT * FROM reports WHERE user_id = $1', [user_id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Report not found' });
+    }
+
+    const report = result.rows[0];
+    const suggestions = [];
+
+    if (report.lessons_completed < 5) {
+      suggestions.push("Încearcă să finalizezi mai multe lecții pentru a consolida baza de vocabular.");
+    }
+
+    if (report.mistakes_per_test > 3) {
+      suggestions.push("Ai făcut în medie mai mult de 3 greșeli per test. Revizuiește lecțiile înainte de a relua testele.");
+    }
+
+    if (report.avg_test_time < 30) {
+      suggestions.push("Finalizezi testele foarte rapid. Alocă mai mult timp pentru a reflecta asupra fiecărui răspuns.");
+    }
+
+    if (report.progress_percent > 80) {
+      suggestions.push("Felicitări! Ești aproape de final. Poți relua testele pentru a verifica cât ai reținut.");
+    }
+
+    if (report.total_time < 200) {
+      suggestions.push("Încearcă să petreci mai mult timp în aplicație pentru rezultate mai bune.");
+    }
+
+    const response = {
+      summary: `Ai finalizat ${report.lessons_completed} lecții și ${report.tests_completed} teste.`,
+      progress_percent: report.progress_percent,
+      suggestions
+    };
+
+    res.json(response);
+  } catch (err) {
+    console.error("Eroare la generarea raportului AI:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 export default {
   getReportByUserId,
     updateReport,
     resetReport,
     updateAfterTest,
     updateAfterLesson,
-    updateProgressPercent
+    updateProgressPercent,
+  generateAIReport
 };

@@ -63,14 +63,14 @@ const TestPage = () => {
     setScore(0);
     setFlipped(false);
     setShowResult(false);
-    setStartTime(Date.now()); // resetăm timpul
+    setStartTime(Date.now()); 
   };
 
  const handleFinishTest = async () => {
   try {
     const token = localStorage.getItem("token");
     const endTime = Date.now();
-    const timeSpentInMinutes = Math.floor((endTime - startTime) / 60000);
+    const timeSpentInMinutes = Math.max(1, Math.floor((endTime - startTime) / 60000));
     const mistakes = flashcards.length - score;
 
     const res = await fetch(`http://localhost:5000/api/tests/${id}/complete`, {
@@ -81,12 +81,17 @@ const TestPage = () => {
       },
       body: JSON.stringify({
         userId: user.id,
-        new_test_time: timeSpentInMinutes,
-        mistakes: mistakes,
+        test_id: id,               // 🔥 trimitem test_id
+        new_test_time: timeSpentInMinutes, // 🔥 numele corect, consistență cu backend
+        new_mistakes: mistakes,    // 🔥 numele corect, consistență cu backend
       }),
     });
 
-    if (!res.ok) throw new Error("Failed to complete test");
+    if (!res.ok) {
+      const errorData = await res.json();
+      alert(errorData.message || "Failed to complete test.");
+      return;
+    }
 
     navigate("/flashcards", { state: { refreshReport: true } }); 
   } catch (error) {
@@ -94,6 +99,7 @@ const TestPage = () => {
     alert("A apărut o eroare la finalizarea testului.");
   }
 };
+
 
 
   if (flashcards.length === 0) {

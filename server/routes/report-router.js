@@ -11,6 +11,7 @@ router.put('/report/reset/:user_id', middleware.authMiddleware, controllers.repo
 router.put('/report/test/:user_id', middleware.authMiddleware, controllers.report.updateAfterTest);
 router.put('/report/lesson/:user_id', middleware.authMiddleware, controllers.report.updateAfterLesson);
 router.put('/report/progress/:user_id', middleware.authMiddleware, controllers.report.updateProgressPercent);
+router.get("/ai-feedback/:user_id", middleware.authMiddleware, controllers.report.generateAIReport);
 
 export default router;
  

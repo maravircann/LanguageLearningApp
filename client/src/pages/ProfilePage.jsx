@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom"; 
 import TopNavbar from "../components/Shared/TopNavbar";
 import Sidebar from "../components/Shared/Sidebar";
 import "./ProfilePage.css";
@@ -8,20 +9,21 @@ const ProfilePage = () => {
   const [domainName, setDomainName] = useState("");
   const user = JSON.parse(localStorage.getItem("user"));
   const selectedLanguage = localStorage.getItem("language") || "Engleză";
-
+  const location = useLocation(); 
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchReportAndDomain = async () => {
       try {
         const token = localStorage.getItem("token");
 
-        // Fetch raport
+        
         const reportRes = await fetch(`http://localhost:5000/api/report/${user.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const reportData = await reportRes.json();
         setReport(reportData);
 
-        // Fetch domeniu
+        // 🔥 Fetch domeniu
         const domainRes = await fetch(`http://localhost:5000/api/domains/${user.domain_id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -33,16 +35,19 @@ const ProfilePage = () => {
     };
 
     fetchReportAndDomain();
-  }, [user.id, user.domain_id]);
+  }, [user.id, user.domain_id, location.state?.refreshReport]); 
 
   if (!report) {
     return <div className="main-content">Loading profile data...</div>;
   }
 
-  // Calcule distribuție activitate (din total_time)
-  const lessonsPercent = Math.round((report.avg_lesson_time * report.lessons_completed) / report.total_time * 100) || 0;
-  const testsPercent = Math.round((report.avg_test_time * report.tests_completed) / report.total_time * 100) || 0;
-  const flashcardsPercent = 100 - lessonsPercent - testsPercent;
+
+  const totalTimeMinutes = (report.total_time || 1) / 60; 
+  const lessonsTime = (report.avg_lesson_time || 0) * report.lessons_completed;
+  const flashcardsTime = (report.avg_test_time || 0) * report.tests_completed;
+  const lessonsPercent = Math.round((lessonsTime / totalTimeMinutes) * 100);
+  const flashcardsPercent = Math.round((flashcardsTime / totalTimeMinutes) * 100);
+  const otherPercent = Math.max(0, 100 - lessonsPercent - flashcardsPercent);
 
   return (
     <div className="page">
@@ -73,8 +78,12 @@ const ProfilePage = () => {
 
               <div className="stats-grid">
                 <div><strong>{report.lessons_completed}</strong><p>Lessons</p></div>
-                <div><strong>{report.lessons_completed * 12}</strong><p>Flashcards</p></div>
+                <div><strong>{report.tests_completed}</strong><p>Flashcards</p></div>
                 <div><strong>32</strong><p>Active days</p></div>
+                <div><strong>{report.total_time ? (report.total_time / 60).toFixed(1) : 0}</strong><p>Total time (min)</p></div>
+                <div><strong>{report.avg_lesson_time ? report.avg_lesson_time.toFixed(1) : 0}</strong><p>Avg lesson time (min)</p></div>
+                <div><strong>{report.avg_test_time ? report.avg_test_time.toFixed(1) : 0}</strong><p>Avg flashcard time (min)</p></div>
+                <div><strong><button onClick={() => navigate("/report")} className="bg-blue-500 text-white px-4 py-2 rounded mt-4">Generate report</button></strong></div>
               </div>
             </div>
 
@@ -98,7 +107,12 @@ const ProfilePage = () => {
                 <p>Flashcards <span>{flashcardsPercent}%</span></p>
                 <div className="bar"><div className="filled" style={{ width: `${flashcardsPercent}%` }}></div></div>
 
-                
+                {otherPercent > 0 && (
+                  <>
+                    <p>Other <span>{otherPercent}%</span></p>
+                    <div className="bar"><div className="filled" style={{ width: `${otherPercent}%` }}></div></div>
+                  </>
+                )}
               </div>
             </div>
           </div>

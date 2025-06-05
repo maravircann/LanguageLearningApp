@@ -14,7 +14,7 @@ const TopNavbar = () => {
               <a href="/flashcards">Flashcards</a>
             </div>
             <div className="navbar-right">
-              <button className="profile-btn" onClick={() => navigate('/profile')}>
+              <button className="profile-btn" onClick={() => navigate('/profile', { state: { refreshReport: true } })}>
                 Profile
               </button>
             </div>

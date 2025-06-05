@@ -28,7 +28,7 @@ const LessonPage = () => {
   try {
     const token = localStorage.getItem("token");
     const endTime = Date.now();
-    const timeSpentInMinutes = Math.floor((endTime - startTime) / 60000);
+    const timeSpentInMinutes = Math.max(1, Math.floor((endTime - startTime) / 60000));
 
     const resLesson = await fetch(`http://localhost:5000/api/lessons/${id}/complete`, {
       method: "PUT",
@@ -159,7 +159,7 @@ const LessonPage = () => {
         />
 
         <main className="main-content">
-          <h2>Lecția #{id}</h2>
+          <h2>Lesson {id}</h2>
 
           <div className="lesson-tablist">
             <button

@@ -13,17 +13,17 @@
   }
   
   .show-answer-button {
-    background-color: #5A0A45;
+    background-color: #1D3557;
     color: white;
   }
   
   .correct-button {
-    background-color: #4CAF50;
+    background-color: #3b8d3d;
     color: white;
   }
   
   .wrong-button {
-    background-color: #f44336;
+    background-color: #b52c23;
     color: white;
   }
   
@@ -49,7 +49,7 @@
   
   .progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, #5A0A45, #7c145d);
+    background: linear-gradient(90deg, #1D3557, #123456);
     border-radius: 10px;
     transition: width 0.5s ease-in-out;
   }

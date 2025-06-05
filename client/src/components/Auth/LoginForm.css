@@ -7,7 +7,7 @@
   /* Stânga - Welcome */
   .login-left {
     width: 50%;
-    background: linear-gradient(to right, #f3c6dd, #d3e0f2);
+    background: linear-gradient(to right, #c6def3, #809cc3);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -50,7 +50,7 @@
   .login-form button {
     width: 100%;
     padding: 0.8rem;
-    background-color: #5e002f;
+    background-color: #1D3557;
     color: white;
     font-size: 1rem;
     border: none;
@@ -59,7 +59,7 @@
   }
   
   .login-form button:hover {
-    background-color: #410022;
+    background-color: #1D3557;
   }
   
   /* Animatie pentru aparitia formularului */
