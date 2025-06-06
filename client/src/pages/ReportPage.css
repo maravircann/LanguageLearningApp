@@ -44,7 +44,7 @@
 
 .progress-badge {
   display: inline-block;
-  background-color: #3b82f6;
+  background-color: #1D3557;
   color: white;
   font-weight: bold;
   padding: 0.2rem 0.6rem;
@@ -53,7 +53,7 @@
 }
 
 .back-btn {
-  background-color: #1d4ed8;
+  background-color: #1D3557;
   color: white;
   padding: 0.6rem 1rem;
   border: none;

@@ -6,6 +6,7 @@ import expressions from './expression-controller.js'
 import wordFlashcards from './word-flashcard-controller.js'
 import report from './report-controller.js'
 import domain from './domain-controller.js'
+import exportReports from './report-ml.js'
 export default{
     auth,
     lessons,
@@ -14,6 +15,7 @@ export default{
     expressions,
     wordFlashcards,
     report,
-    domain
+    domain,
+    exportReports
 
 }

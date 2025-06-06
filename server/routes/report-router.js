@@ -2,6 +2,7 @@ import express from 'express';
 import controllers from './controllers/index.js';
 import middleware from '../middleware/index.js';
 
+
 const router = express.Router();
 
 // Rute protejate
@@ -12,6 +13,9 @@ router.put('/report/test/:user_id', middleware.authMiddleware, controllers.repor
 router.put('/report/lesson/:user_id', middleware.authMiddleware, controllers.report.updateAfterLesson);
 router.put('/report/progress/:user_id', middleware.authMiddleware, controllers.report.updateProgressPercent);
 router.get("/ai-feedback/:user_id", middleware.authMiddleware, controllers.report.generateAIReport);
+router.post("/ml-feedback", middleware.authMiddleware, controllers.exportReports.getMLFeedback);
+
+
 
 export default router;
  

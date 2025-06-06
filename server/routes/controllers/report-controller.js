@@ -283,7 +283,13 @@ const generateAIReport = async (req, res) => {
     const response = {
       summary: `Ai finalizat ${report.lessons_completed} lecții și ${report.tests_completed} teste.`,
       progress_percent: report.progress_percent,
-      suggestions
+      suggestions,
+      lessons_completed: report.lessons_completed,
+      tests_completed: report.tests_completed,
+      avg_lesson_time: report.avg_lesson_time,
+      avg_test_time: report.avg_test_time,
+      mistakes_per_test: report.mistakes_per_test,
+      total_time: report.total_time
     };
 
     res.json(response);
