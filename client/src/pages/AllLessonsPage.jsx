@@ -13,7 +13,7 @@ const AllLessonsPage = () => {
 
   const user = JSON.parse(localStorage.getItem("user"));
   const domainId = user?.domain_id;
-  const selectedLanguage = localStorage.getItem("language") || "en";
+ const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('language') || 'en');
 
   useEffect(() => {
     const fetchLessons = async () => {
@@ -41,8 +41,9 @@ const AllLessonsPage = () => {
     fetchLessons();
   }, []);
 
-  const handleLanguageChange = (lang) => {
-    localStorage.setItem("language", lang);
+ const handleLanguageChange = (lang) => {
+    setSelectedLanguage(lang);
+    localStorage.setItem('language', lang);
   };
 
   const filteredLessons = lessons.filter(

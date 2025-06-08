@@ -9,20 +9,29 @@ const LessonPage = () => {
   const { id } = useParams();
   const navigate = useNavigate(); // Adăugat
   const user = JSON.parse(localStorage.getItem("user"));
-  const selectedLanguage = localStorage.getItem("language") || "en";
+  
   const [lessonWords, setLessonWords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("content");
   const [startTime, setStartTime] = useState(null); 
-
+  const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('language') || 'en');
   useEffect(() => {
     setStartTime(Date.now()); 
   }, []);
 
+ 
   const handleLanguageChange = (lang) => {
-    localStorage.setItem("language", lang);
-    window.location.reload();
-  };
+  setSelectedLanguage(lang);
+  localStorage.setItem('language', lang);
+
+ 
+  Object.keys(localStorage).forEach((key) => {
+    if (key.startsWith("translation_")) {
+      localStorage.removeItem(key);
+    }
+  });
+};
+
 
   const handleFinishLesson = async () => {
   try {
@@ -59,7 +68,7 @@ const LessonPage = () => {
 
 
 
-  const TranslationRenderer = ({ word }) => {
+  const TranslationRenderer = ({ word, selectedLanguage}) => {
     const [translated, setTranslated] = useState("...");
 
     useEffect(() => {
@@ -72,7 +81,7 @@ const LessonPage = () => {
       }
 
       const fetchTranslation = async () => {
-        const result = await translateText(word, "en", selectedLanguage);
+        const result = await translateText(word, selectedLanguage);
         localStorage.setItem(cacheKey, result);
         setTranslated(result);
       };
@@ -104,7 +113,7 @@ const LessonPage = () => {
         </p>
         <button
           className="speak-btn"
-          onClick={() => speakWord(word, selectedLanguage)}
+          onClick={() => speakWord(translated, selectedLanguage)}
           title="Listen"
         >
           🔊
@@ -196,7 +205,8 @@ const LessonPage = () => {
                   {lessonWords.map((word) => (
                     <div key={word.id} className="word-item">
                       <strong>{word.word}</strong>
-                      <TranslationRenderer word={word.word} />
+                      <TranslationRenderer word={word.word} selectedLanguage={selectedLanguage} />
+
                     </div>
                   ))}
                 </div>

@@ -8,7 +8,7 @@ const ProfilePage = () => {
   const [report, setReport] = useState(null);
   const [domainName, setDomainName] = useState("");
   const user = JSON.parse(localStorage.getItem("user"));
-  const selectedLanguage = localStorage.getItem("language") || "Engleză";
+  const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('language') || 'en');
   const location = useLocation(); 
   const navigate = useNavigate();
   useEffect(() => {
@@ -37,6 +37,11 @@ const ProfilePage = () => {
     fetchReportAndDomain();
   }, [user.id, user.domain_id, location.state?.refreshReport]); 
 
+   const handleLanguageChange = (lang) => {
+    setSelectedLanguage(lang);
+    localStorage.setItem('language', lang);
+  };
+  
   if (!report) {
     return <div className="main-content">Loading profile data...</div>;
   }
@@ -53,7 +58,8 @@ const ProfilePage = () => {
     <div className="page">
       <TopNavbar />
       <div className="layout">
-        <Sidebar selectedLanguage={selectedLanguage} />
+        <Sidebar  selectedLanguage={selectedLanguage}
+          onLanguageChange={handleLanguageChange} />
 
         <main className="main-content profile-page">
           <h2>Personal profile</h2>

@@ -13,8 +13,7 @@ const AllTestsPage = () => {
 
   const user = JSON.parse(localStorage.getItem("user"));
   const domainId = user?.domain_id;
-  const selectedLanguage = localStorage.getItem("language") || "en";
-
+  const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('language') || 'en');
   useEffect(() => {
     const fetchTests = async () => {
       try {
@@ -42,7 +41,8 @@ const AllTestsPage = () => {
   }, []);
 
   const handleLanguageChange = (lang) => {
-    localStorage.setItem("language", lang);
+    setSelectedLanguage(lang);
+    localStorage.setItem('language', lang);
   };
 
   const filteredTests = tests.filter((test) => test.domain_id === domainId);

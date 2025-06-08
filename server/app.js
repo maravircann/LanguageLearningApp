@@ -27,5 +27,5 @@ app.use('/api', routes.expressions);
 app.use('/api', routes.wordFlashcards);
 app.use('/api', routes.report);
 app.use('/api', routes.domains);
-
+app.use('/api', routes.translate);
 export default app
