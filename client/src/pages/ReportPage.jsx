@@ -77,7 +77,7 @@ const ReportPage = () => {
     const doc = new jsPDF();
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(16);
-    doc.text("📊 Personalized AI Report", 20, 20);
+    doc.text("Personalized AI Report", 20, 20);
 
     doc.setFontSize(12);
     doc.text(`User: ${user.name}`, 20, 35);
@@ -121,16 +121,16 @@ const ReportPage = () => {
   return (
     <div className="report-container">
       <div className="report-card">
-        <h1 className="report-title">📊 Personalized AI Report</h1>
+        <h1 className="report-title">Personalized AI Report</h1>
         <p className="report-subtitle">Automatically generated based on your activity.</p>
 
         <div className="report-section">
-          <p><strong>📝 Summary:</strong> {report.summary}</p>
-          <p><strong>📈 Progress:</strong> <span className="progress-badge">{Math.round(report.progress_percent)}%</span></p>
+          <p><strong>Summary:</strong> {report.summary}</p>
+          <p><strong>Progress:</strong> <span className="progress-badge">{Math.round(report.progress_percent)}%</span></p>
         </div>
 
         <div className="report-section">
-          <h3 className="section-title">💡 Improvement Suggestions</h3>
+          <h3 className="section-title">Improvement Suggestions</h3>
           <ul className="suggestion-list">
   {Array.isArray(report?.suggestions) &&
     report.suggestions.map((s, i) => (
@@ -142,11 +142,11 @@ const ReportPage = () => {
 
         {Array.isArray(mlSuggestions) && mlSuggestions.length > 0 && (
           <div className="report-section">
-            <h3 className="section-title">🤖 ML-Based Tips</h3>
+            <h3 className="section-title">Tips based on your performance</h3>
             {predictedLevel && (
-              <p><strong>Nivel estimat:</strong> {predictedLevel === "low" ? "Începător" :
-                                          predictedLevel === "medium" ? "Intermediar" :
-                                          predictedLevel === "high" ? "Avansat" : predictedLevel}</p>
+              <p><strong>Estimated level:</strong> {predictedLevel === "low" ? "Beginner" :
+                                          predictedLevel === "medium" ? "Intermediate" :
+                                          predictedLevel === "high" ? "Advanced" : predictedLevel}</p>
     )}
 
             <ul className="suggestion-list">
@@ -159,7 +159,7 @@ const ReportPage = () => {
 
         {chartImage && (
         <div className="report-section">
-          <h3 className="section-title">📈 Grafic AI</h3>
+          <h3 className="section-title">Progress Analysis</h3>
           <img
             src={`data:image/png;base64,${chartImage}`}
             alt="Grafic generat de AI"
@@ -167,7 +167,7 @@ const ReportPage = () => {
           />
         </div>
       )}
-        <button className="back-btn" onClick={handleDownloadPDF}>⬇️ Download PDF</button>
+        <button className="back-btn" onClick={handleDownloadPDF}> Download PDF</button>
         <button className="back-btn" onClick={() => navigate("/profile")}>← Back to Profile</button>
       </div>
     </div>

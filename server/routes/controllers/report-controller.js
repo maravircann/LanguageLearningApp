@@ -247,11 +247,16 @@ const generateAIReport = async (req, res) => {
   try {
     const { user_id } = req.params;
 
-    if (req.user.id !== parseInt(user_id)) {
+    // Ensure the authenticated user matches the requested user ID
+    if (req.user.id !== parseInt(user_id, 10)) {
       return res.status(403).json({ message: 'Forbidden: Access denied' });
     }
 
-    const result = await pool.query('SELECT * FROM reports WHERE user_id = $1', [user_id]);
+    // Fetch the user's report from the database
+    const result = await pool.query(
+      'SELECT * FROM reports WHERE user_id = $1',
+      [user_id]
+    );
 
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Report not found' });
@@ -260,28 +265,40 @@ const generateAIReport = async (req, res) => {
     const report = result.rows[0];
     const suggestions = [];
 
+    // Personalized suggestions based on report data
     if (report.lessons_completed < 5) {
-      suggestions.push("Încearcă să finalizezi mai multe lecții pentru a consolida baza de vocabular.");
+      suggestions.push(
+        'Try completing more lessons to build a stronger vocabulary foundation.'
+      );
     }
 
     if (report.mistakes_per_test > 3) {
-      suggestions.push("Ai făcut în medie mai mult de 3 greșeli per test. Revizuiește lecțiile înainte de a relua testele.");
+      suggestions.push(
+        'You averaged more than 3 mistakes per test. Review the lessons before retaking the tests.'
+      );
     }
 
     if (report.avg_test_time < 30) {
-      suggestions.push("Finalizezi testele foarte rapid. Alocă mai mult timp pentru a reflecta asupra fiecărui răspuns.");
+      suggestions.push(
+        'You finish tests very quickly. Allocate more time to reflect on each answer.'
+      );
     }
 
     if (report.progress_percent > 80) {
-      suggestions.push("Felicitări! Ești aproape de final. Poți relua testele pentru a verifica cât ai reținut.");
+      suggestions.push(
+        'Congratulations! You are almost finished. Consider retaking tests to see how much you retain.'
+      );
     }
 
     if (report.total_time < 200) {
-      suggestions.push("Încearcă să petreci mai mult timp în aplicație pentru rezultate mai bune.");
+      suggestions.push(
+        'Try spending more time in the app for better results.'
+      );
     }
 
+    // Build the response payload
     const response = {
-      summary: `Ai finalizat ${report.lessons_completed} lecții și ${report.tests_completed} teste.`,
+      summary: `You have completed ${report.lessons_completed} lessons and ${report.tests_completed} tests.`,
       progress_percent: report.progress_percent,
       suggestions,
       lessons_completed: report.lessons_completed,
@@ -294,8 +311,8 @@ const generateAIReport = async (req, res) => {
 
     res.json(response);
   } catch (err) {
-    console.error("Eroare la generarea raportului AI:", err);
-    res.status(500).json({ message: "Server error" });
+    console.error('Error generating AI report:', err);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
