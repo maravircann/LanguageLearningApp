@@ -25,6 +25,7 @@ const EngineeringPage = () => {
           </div>
         </div>
         <div className="hero-right">
+          {/* image */}
           <img
             src="/images/medicine-hero.png" 
             alt="Medical Illustration"
