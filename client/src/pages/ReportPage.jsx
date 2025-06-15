@@ -115,13 +115,13 @@ const ReportPage = () => {
   };
 
   if (!report) {
-    return <div className="report-loading">Generating AI report...</div>;
+    return <div className="report-loading">Generating report...</div>;
   }
 
   return (
     <div className="report-container">
       <div className="report-card">
-        <h1 className="report-title">Personalized AI Report</h1>
+        <h1 className="report-title">Personalized Report</h1>
         <p className="report-subtitle">Automatically generated based on your activity.</p>
 
         <div className="report-section">

@@ -42,7 +42,7 @@ const updateReport = async (req, res) => {
       const totalLessonsResult = await pool.query('SELECT COUNT(*) FROM lessons');
       const totalLessons = parseInt(totalLessonsResult.rows[0].count);
   
-      // calcul progres
+     
       const progress_percent = totalLessons > 0 ? (lessons_completed / totalLessons) * 100 : 0;
   
       const result = await pool.query(
@@ -114,7 +114,7 @@ const updateAfterTest = async (req, res) => {
     const { user_id } = req.params;
     const { new_test_time, new_mistakes, test_id } = req.body;
 
-    // Verificăm dacă testul e deja finalizat
+   
     const testCheck = await pool.query('SELECT completed FROM tests WHERE id = $1', [test_id]);
     if (testCheck.rows.length === 0 || !testCheck.rows[0].completed) {
       return res.status(400).json({ message: 'Test not marked as completed yet.' });
@@ -168,7 +168,7 @@ const updateAfterTest = async (req, res) => {
     }
     const report = reportResult.rows[0];
 
-    // 🔥 Nu mai incrementăm lessons_completed aici!
+    
     const updatedAvgLessonTime =
       (report.avg_lesson_time * report.lessons_completed + new_lesson_time) / (report.lessons_completed || 1);
     const updatedTotalTime = report.total_time + new_lesson_time;

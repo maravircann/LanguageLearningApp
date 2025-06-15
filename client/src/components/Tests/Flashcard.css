@@ -38,6 +38,6 @@
   
   .flashcard .back {
     transform: rotateY(180deg);
-    background-color: #d8d5e4; /* culoare diferită pentru verso */
+    background-color: #d8d5e4; 
   }
   

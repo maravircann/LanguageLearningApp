@@ -8,7 +8,7 @@ import "./AllLessonsPage.css";
 const AllLessonsPage = () => {
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [lessonTab, setLessonTab] = useState("all"); // all, completed, incomplete
+  const [lessonTab, setLessonTab] = useState("all"); 
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -67,7 +67,7 @@ const AllLessonsPage = () => {
         <main className="main-content">
           <h2 className="section-title">All lessons</h2>
 
-          {/* Tablist pentru filtrare */}
+          
           <div className="lesson-tablist">
             <button
               className={lessonTab === "all" ? "active" : ""}
@@ -89,7 +89,7 @@ const AllLessonsPage = () => {
             </button>
           </div>
 
-          {/* Lecțiile filtrate afișate în grid */}
+          
           {loading ? (
             <p>Lessons loading...</p>
           ) : (

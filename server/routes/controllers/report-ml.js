@@ -34,7 +34,7 @@ const getMLFeedback = (req, res) => {
     }
   });
 
-  // trimitem JSON-ul către stdin
+  
   py.stdin.write(JSON.stringify(userData));
   py.stdin.end();
 };

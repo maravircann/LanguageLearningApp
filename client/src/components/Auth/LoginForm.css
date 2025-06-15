@@ -4,7 +4,7 @@
     width: 100vw;
   }
   
-  /* Stânga - Welcome */
+ 
   .login-left {
     width: 50%;
     background: linear-gradient(to right, #c6def3, #809cc3);
@@ -17,7 +17,7 @@
     padding: 2rem;
   }
   
-  /* Dreapta - formular */
+  
   .login-right {
     width: 50%;
     display: flex;
@@ -62,12 +62,12 @@
     background-color: #1D3557;
   }
   
-  /* Animatie pentru aparitia formularului */
+  
   .login-form {
     animation: fadeSlideUp 0.8s ease forwards;
   }
   
-  /* Asigură-te că ai și keyframes */
+  
   @keyframes fadeSlideUp {
     0% {
       opacity: 0;

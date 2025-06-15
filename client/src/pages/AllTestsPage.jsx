@@ -8,7 +8,7 @@ import "./AllTestsPage.css";
 const AllTestsPage = () => {
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [testTab, setTestTab] = useState("all"); // all, completed, incomplete
+  const [testTab, setTestTab] = useState("all"); 
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));

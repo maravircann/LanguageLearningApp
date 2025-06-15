@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './TestCard.css'; // Importăm și css-ul
+import './TestCard.css'; 
 
 const TestCard = ({ test }) => {
   const navigate = useNavigate();

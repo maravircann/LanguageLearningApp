@@ -26,7 +26,7 @@ const FinanceAccountingPage = () => {
         </div>
         <div className="hero-right">
           <img
-            src="/images/medicine-hero.png" // imagine ilustrativă simbolică
+            src="/images/medicine-hero.png" 
             alt="Medical Illustration"
             className="hero-image"
           />

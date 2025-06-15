@@ -10,13 +10,13 @@
   z-index: 10;
 }
 
-/* LOGO în stânga */
+
 .logo {
   height: 140px;
   object-fit: contain;
 }
 
-/* LINKURI CENTRATE */
+
 .nav-links {
   position: absolute;
   left: 50%;

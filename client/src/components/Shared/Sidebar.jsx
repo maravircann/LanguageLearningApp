@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaBook, FaThLarge, FaClipboardList, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
-import './Sidebar.css'; // stiluri separate (vezi mai jos)
+import './Sidebar.css'; 
 import { useLocation } from 'react-router-dom';
 
 const Sidebar = ({ selectedLanguage, onLanguageChange }) => {

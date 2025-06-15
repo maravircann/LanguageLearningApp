@@ -12,12 +12,12 @@ const TestPage = () => {
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [startTime, setStartTime] = useState(null);
-  const [user, setUser] = useState(null); // presupunem că userul e obținut local
+  const [user, setUser] = useState(null); 
   const navigate = useNavigate();
   useEffect(() => {
-    setStartTime(Date.now()); // setează momentul de start al testului
+    setStartTime(Date.now()); 
 
-    // Simulează obținerea user-ului curent (poate fi înlocuit cu context sau API)
+    
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) setUser(storedUser);
   }, []);
@@ -81,9 +81,9 @@ const TestPage = () => {
       },
       body: JSON.stringify({
         userId: user.id,
-        test_id: id,               // 🔥 trimitem test_id
-        new_test_time: timeSpentInMinutes, // 🔥 numele corect, consistență cu backend
-        new_mistakes: mistakes,    // 🔥 numele corect, consistență cu backend
+        test_id: id,              
+        new_test_time: timeSpentInMinutes, 
+        new_mistakes: mistakes,    
       }),
     });
 

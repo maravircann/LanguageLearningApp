@@ -10,13 +10,13 @@ const Flashcard = ({ word, flipped, handleFlip }) => {
       const lang = localStorage.getItem("language") || "en";
       const cacheKey = `translation_${word}_${lang}`;
 
-      // dacă limba e engleză, nu traducem
+      
       if (lang === "en") {
         setTranslatedWord(word);
         return;
       }
 
-      // verificăm dacă avem traducerea în cache
+      
       const cached = localStorage.getItem(cacheKey);
       if (cached) {
         setTranslatedWord(cached);

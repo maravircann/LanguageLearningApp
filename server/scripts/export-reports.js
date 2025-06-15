@@ -11,9 +11,9 @@ const exportReports = async () => {
     );
 
     fs.writeFileSync("rapoarte.csv", csvHeader + csvRows.join("\n"));
-    console.log("✅ Export complet! Fișierul salvat: rapoarte.csv");
+    console.log(" Export complet! Fișierul salvat: rapoarte.csv");
   } catch (err) {
-    console.error("❌ Eroare la export:", err);
+    console.error(" Eroare la export:", err);
   } finally {
     process.exit();
   }

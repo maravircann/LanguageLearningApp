@@ -29,7 +29,7 @@ body {
 
 
 
-/* HERO section în două coloane */
+
 .hero {
   display: flex;
   justify-content: space-between;
@@ -110,7 +110,6 @@ body {
   background-color: #1D3557;
 }
 
-/* HERO imagine */
 .hero-right {
   flex: 1;
   display: flex;
@@ -186,7 +185,7 @@ body {
 
 
 
-/* Animație apariție imagine */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -198,7 +197,7 @@ body {
   }
 }
 
-/* Responsive */
+
 @media screen and (max-width: 768px) {
   .navbar {
     flex-direction: column;
