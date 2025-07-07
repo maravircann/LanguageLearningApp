@@ -51,8 +51,10 @@ const TestPage = () => {
     }
 
     if (currentIndex + 1 < flashcards.length) {
-      setCurrentIndex((prev) => prev + 1);
       setFlipped(false);
+      setTimeout(() => {
+      setCurrentIndex((prev) => prev + 1);
+      }, 200); 
     } else {
       setShowResult(true);
     }

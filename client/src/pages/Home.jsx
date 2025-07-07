@@ -19,6 +19,9 @@ const Home = () => {
 
   const [domainName, setDomainName] = useState('');
   const [report, setReport] = useState(null);
+  const [recentLessons, setRecentLessons] = useState([]);
+const [recentTests, setRecentTests] = useState([]);
+
 
 const [selectedTab, setSelectedTab] = useState("lessons");
   // Fetch lessons and tests
@@ -85,6 +88,18 @@ const [selectedTab, setSelectedTab] = useState("lessons");
 
   fetchData();
 }, [location.state?.refreshReport]);
+
+useEffect(() => {
+  const storedLessons = JSON.parse(localStorage.getItem("recentLessons") || "[]");
+  const storedTests = JSON.parse(localStorage.getItem("recentTests") || "[]");
+
+  
+  const filteredRecentLessons = storedLessons.filter(l => l.domain_id === domainId);
+  const filteredRecentTests = storedTests.filter(t => t.domain_id === domainId);
+
+  setRecentLessons(filteredRecentLessons);
+  setRecentTests(filteredRecentTests);
+}, [domainId]);
 
 
   
@@ -160,14 +175,14 @@ return (
             <section>
               <h2>Recent Lessons</h2>
               <div className="lesson-list">
-                {filteredLessons.length > 0 ? (
-                  filteredLessons
+                {recentLessons.length > 0 ? (
+                  recentLessons
                     .slice(0, 3)
                     .map((lesson) => (
                       <LessonCard key={lesson.id} lesson={lesson} />
                     ))
                 ) : (
-                  <p>Nu există lecții disponibile.</p>
+                  <p>You didn't acces any lesson.</p>
                 )}
               </div>
             </section>
@@ -177,12 +192,12 @@ return (
             <section>
               <h2>Recent Flashcards</h2>
               <div className="test-list">
-                {filteredTests.length > 0 ? (
-                  filteredTests
+                {recentTests.length > 0 ? (
+                  recentTests
                     .slice(0, 3)
                     .map((test) => <TestCard key={test.id} test={test} />)
                 ) : (
-                  <p>Nu există teste disponibile.</p>
+                  <p>You didn't acces any test.</p>
                 )}
               </div>
             </section>

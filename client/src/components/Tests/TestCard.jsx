@@ -5,7 +5,10 @@ import './TestCard.css';
 const TestCard = ({ test }) => {
   const navigate = useNavigate();
 
-  const handleStartTest = () => {
+   const handleStartTest = () => {
+    const recentTests = JSON.parse(localStorage.getItem("recentTests") || "[]");
+    const updated = [test, ...recentTests.filter((t) => t.id !== test.id)];
+    localStorage.setItem("recentTests", JSON.stringify(updated.slice(0, 10)));
     navigate(`/test/${test.id}`);
   };
 

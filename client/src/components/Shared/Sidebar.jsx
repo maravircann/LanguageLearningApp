@@ -11,8 +11,15 @@ const Sidebar = ({ selectedLanguage, onLanguageChange }) => {
   const isActive = (path) => location.pathname === path;
 
   const handleLogout = () => {
+    const recentLessons = localStorage.getItem("recentLessons");
+  const recentTests = localStorage.getItem("recentTests");
+
     localStorage.clear();
-    navigate('/login');
+
+    if (recentLessons) localStorage.setItem("recentLessons", recentLessons);
+  if (recentTests) localStorage.setItem("recentTests", recentTests);
+  
+    navigate('/');
   };
 
   return (

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './RegisterForm.css';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -31,8 +34,16 @@ const RegisterForm = () => {
       const data = await res.json();
 
       if (res.ok) {
-        alert('Registered successfully!');
-        navigate('/login');
+        toast.success('Registered successfully!', {
+    position: 'top-center',
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+  setTimeout(() => navigate('/login'), 3000);
       } else {
         alert(data.message || 'Registration failed');
       }
@@ -74,6 +85,8 @@ const RegisterForm = () => {
           <button type="submit">Sign Up</button>
         </form>
       </div>
+      <ToastContainer />
+
     </div>
   );
 };

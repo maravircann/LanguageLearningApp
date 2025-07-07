@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { translateText } from "../../utils/translateText"; // asigură-te că calea e corectă
+import { translateText } from "../../utils/translateText"; 
 import "./Flashcard.css";
 
 const Flashcard = ({ word, flipped, handleFlip }) => {
@@ -40,7 +40,7 @@ const Flashcard = ({ word, flipped, handleFlip }) => {
     <div className="flashcard-container" onClick={handleFlip}>
       <div className={`flashcard ${flipped ? "flipped" : ""}`}>
         <div className="front">
-          <h2>{translatedWord}</h2>
+          <h2>{word}</h2>
         </div>
         <div className="back">
           <h2>{translatedWord}</h2>

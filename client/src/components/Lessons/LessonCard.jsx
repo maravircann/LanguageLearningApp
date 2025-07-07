@@ -6,8 +6,12 @@ const LessonCard =({ lesson })=> {
     const navigate = useNavigate();
     
     const handleStartLesson = () => {
-        navigate(`/lesson/${lesson.id}`);
+    const recentLessons = JSON.parse(localStorage.getItem("recentLessons") || "[]");
+    const updated = [lesson, ...recentLessons.filter((l) => l.id !== lesson.id)];
+    localStorage.setItem("recentLessons", JSON.stringify(updated.slice(0, 10)));
+    navigate(`/lesson/${lesson.id}`);
     }
+
     return (
         <div className="lesson-card">
           <h2>{lesson.title}</h2>
