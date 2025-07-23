@@ -28,4 +28,5 @@ app.use('/api', routes.wordFlashcards);
 app.use('/api', routes.report);
 app.use('/api', routes.domains);
 app.use('/api', routes.translate);
+app.use('/api', routes.contactController);
 export default app

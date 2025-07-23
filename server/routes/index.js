@@ -8,6 +8,7 @@ import report from './report-router.js'
 import e from 'cors'
 import domains from './domain-router.js'
 import translate from './translate-router.js'
+import contactController from './contact-router.js'
 export default{
     auth,
     lessons,
@@ -17,5 +18,6 @@ export default{
     wordFlashcards,
     report,
     domains,
-    translate
+    translate,
+    contactController
 }

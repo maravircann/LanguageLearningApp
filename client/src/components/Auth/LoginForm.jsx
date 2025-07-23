@@ -33,7 +33,8 @@ const LoginForm = () => {
   id: data.id,
   name: data.name,
   email: data.email,
-  domain_id: data.domain_id
+  domain_id: data.domain_id,
+  created_at: data.created_at
 }));
         navigate('/home');
       } else {

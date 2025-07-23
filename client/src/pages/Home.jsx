@@ -10,7 +10,7 @@ const Home = () => {
   const [lessons, setLessons] = useState([]);
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('language') || 'en');
+  const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('language') || "");
   const navigate = useNavigate();
   const location = useLocation();
   const user = JSON.parse(localStorage.getItem('user'));
@@ -90,8 +90,9 @@ const [selectedTab, setSelectedTab] = useState("lessons");
 }, [location.state?.refreshReport]);
 
 useEffect(() => {
-  const storedLessons = JSON.parse(localStorage.getItem("recentLessons") || "[]");
-  const storedTests = JSON.parse(localStorage.getItem("recentTests") || "[]");
+  const storedLessons = JSON.parse(localStorage.getItem(`recentLessons_${user.id}`) || "[]");
+  const storedTests = JSON.parse(localStorage.getItem(`recentTests_${user.id}`) || "[]");
+
 
   
   const filteredRecentLessons = storedLessons.filter(l => l.domain_id === domainId);
@@ -135,7 +136,7 @@ return (
           <div className="progress-summary">
             <div className="progress-card">
               <h3>Total Progress</h3>
-              <p>{report.progress_percent || 0}%</p>
+              <p>{(report.progress_percent || 0).toFixed(2)}%</p>
               <div className="progress-bar-home">
                 <div
                   className="filled"

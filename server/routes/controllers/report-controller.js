@@ -125,19 +125,25 @@ const updateAfterTest = async (req, res) => {
       return res.status(404).json({ message: 'Report not found' });
     }
 
+    const testTimeInMinutes = new_test_time / 60;
+
     const report = reportResult.rows[0];
+    
     const updatedTestsCompleted = report.tests_completed + 1;
-    const updatedAvgTestTime = (report.avg_test_time * report.tests_completed + new_test_time) / updatedTestsCompleted;
+    
+    const updatedAvgTestTime = (report.avg_test_time * report.tests_completed + testTimeInMinutes) / updatedTestsCompleted;
+    
     const updatedMistakesPerTest = (report.mistakes_per_test * report.tests_completed + new_mistakes) / updatedTestsCompleted;
-    const updatedTotalTime = report.total_time + new_test_time;
+    const updatedTotalTime = report.total_time + testTimeInMinutes;
 
     const totalLessons = parseInt((await pool.query('SELECT COUNT(*) FROM lessons')).rows[0].count);
     const totalTests = parseInt((await pool.query('SELECT COUNT(*) FROM tests')).rows[0].count);
     const totalItems = totalLessons + totalTests;
 
     const progressPercent = totalItems > 0
-      ? ((report.lessons_completed + updatedTestsCompleted) / totalItems) * 100
-      : 0;
+  ? ((report.lessons_completed + updatedTestsCompleted) / totalItems) * 100
+  : 0;
+
 
     await pool.query(`
       UPDATE reports SET
@@ -147,7 +153,7 @@ const updateAfterTest = async (req, res) => {
         total_time = $4,
         progress_percent = $5
       WHERE user_id = $6
-    `, [updatedTestsCompleted, updatedAvgTestTime, updatedMistakesPerTest, updatedTotalTime, progressPercent, user_id]);
+    `, [ updatedTestsCompleted, updatedAvgTestTime, updatedMistakesPerTest, updatedTotalTime, progressPercent, user_id]);
 
     res.status(200).json({ message: 'Report updated after test', report: reportResult.rows[0] });
   } catch (err) {
@@ -166,35 +172,39 @@ const updateAfterTest = async (req, res) => {
     if (reportResult.rows.length === 0) {
       return res.status(404).json({ message: 'Report not found' });
     }
+
+    const lessonTimeInMinutes = new_lesson_time / 60;
     const report = reportResult.rows[0];
 
-    
+    const updatedLessonsCompleted = report.lessons_completed + 1;
     const updatedAvgLessonTime =
-      (report.avg_lesson_time * report.lessons_completed + new_lesson_time) / (report.lessons_completed || 1);
-    const updatedTotalTime = report.total_time + new_lesson_time;
+      (report.avg_lesson_time * report.lessons_completed + lessonTimeInMinutes) / updatedLessonsCompleted;
+    const updatedTotalTime = report.total_time + lessonTimeInMinutes;
 
     const totalLessons = parseInt((await pool.query('SELECT COUNT(*) FROM lessons')).rows[0].count);
     const totalTests = parseInt((await pool.query('SELECT COUNT(*) FROM tests')).rows[0].count);
     const totalItems = totalLessons + totalTests;
 
     const progressPercent = totalItems > 0
-      ? ((report.lessons_completed + report.tests_completed) / totalItems) * 100
+      ? ((updatedLessonsCompleted + report.tests_completed) / totalItems) * 100
       : 0;
 
     await pool.query(`
       UPDATE reports SET
-        avg_lesson_time = $1,
-        total_time = $2,
-        progress_percent = $3
-      WHERE user_id = $4
-    `, [updatedAvgLessonTime, updatedTotalTime, progressPercent, user_id]);
+        lessons_completed = $1,
+        avg_lesson_time = $2,
+        total_time = $3,
+        progress_percent = $4
+      WHERE user_id = $5
+    `, [updatedLessonsCompleted, updatedAvgLessonTime, updatedTotalTime, progressPercent, user_id]);
 
-    res.status(200).json({ message: 'Report updated after lesson', report: report });
+    res.status(200).json({ message: 'Report updated after lesson' });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 
 
@@ -272,6 +282,17 @@ const generateAIReport = async (req, res) => {
       );
     }
 
+    if (report.lessons_completed >10) {
+      suggestions.push(
+        'You’ve completed many lessons. Consider reviewing previous lessons to reinforce your knowledge.'
+      );
+    }
+    if (report.lessons_completed >15) {
+      suggestions.push(
+        'You’ve completed almost all lessons. Keep up the great work!'
+      );
+    }
+
     if (report.mistakes_per_test > 3) {
       suggestions.push(
         'You averaged more than 3 mistakes per test. Review the lessons before retaking the tests.'
@@ -284,15 +305,36 @@ const generateAIReport = async (req, res) => {
       );
     }
 
+    if (report.avg_test_time > 200) {
+      suggestions.push(
+        'You finish tests very slow. Try to improve your speed without sacrificing accuracy. Concentrate! You got this!'
+      );
+    }
+
     if (report.progress_percent > 80) {
       suggestions.push(
         'Congratulations! You are almost finished. Consider retaking tests to see how much you retain.'
+      );
+    }
+    if (report.progress_percent < 20) {
+      suggestions.push(
+        'You have just started. Keep going! Consistency is key to mastering the language.'
+      );
+    }
+    if (report.progress_percent > 50) {
+      suggestions.push(
+        'You are making good progress. Keep up the hard work!'
       );
     }
 
     if (report.total_time < 200) {
       suggestions.push(
         'Try spending more time in the app for better results.'
+      );
+    }
+     if (report.total_time > 300) {
+      suggestions.push(
+        'You are spending a lot of time in the app. Make sure to take breaks and not overwork yourself.'
       );
     }
 

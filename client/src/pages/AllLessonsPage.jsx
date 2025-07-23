@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import LessonCard from "../components/Lessons/LessonCard";
 import Sidebar from "../components/Shared/Sidebar";
 import TopNavbar from "../components/Shared/TopNavbar";
@@ -9,11 +9,11 @@ const AllLessonsPage = () => {
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [lessonTab, setLessonTab] = useState("all"); 
-  const navigate = useNavigate();
+  
 
   const user = JSON.parse(localStorage.getItem("user"));
   const domainId = user?.domain_id;
- const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('language') || 'en');
+ const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('language') || "");
 
   useEffect(() => {
     const fetchLessons = async () => {

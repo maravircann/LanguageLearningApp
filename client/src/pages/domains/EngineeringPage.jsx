@@ -2,18 +2,27 @@ import React from 'react';
 import Navbar from '../../components/Shared/Navbar.jsx';
 import Footer from '../../components/Shared/Footer.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
-
+import engineering from '../../assets/engineering_domain.png';
+import './Domains.css'
 const EngineeringPage = () => {
   const navigate = useNavigate();
 
+ useEffect(() => {
+  requestAnimationFrame(() => {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  });
+}, []);
+
   return (
-    <div className="homepage">
+    <div className="homepage-domain">
       <Navbar />
 
       {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-left">
+      <section className="hero-domain">
+        <div className="hero-left-domain">
           
           <h1>Engineering</h1>
           <p className="tagline">
@@ -24,10 +33,10 @@ const EngineeringPage = () => {
             <button className="btn btn-signin" onClick={() => navigate('/#domains')}>Back to Domains</button>
           </div>
         </div>
-        <div className="hero-right">
+        <div className="hero-right-domain">
           {/* image */}
           <img
-            src="/images/medicine-hero.png" 
+            src={engineering} 
             alt="Medical Illustration"
             className="hero-image"
           />

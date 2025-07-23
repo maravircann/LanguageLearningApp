@@ -1,0 +1,39 @@
+.hero-domain {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 80px 5% 40px;
+  background-color: #f1f1f1;
+  flex-wrap: wrap;
+  gap: 2rem;
+  min-height: 100vh;
+}
+
+.hero-left-domain {
+  flex: 1;
+  min-width: 200px;
+  text-align: center; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero-left-domain h1 {
+  margin-bottom: 16px; 
+}
+
+
+.hero-right-domain {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-right-domain img {
+  height: 100%;
+  max-height: 80vh;
+  width: auto;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

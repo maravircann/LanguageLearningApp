@@ -2,18 +2,26 @@ import React from 'react';
 import Navbar from '../../components/Shared/Navbar.jsx';
 import Footer from '../../components/Shared/Footer.jsx';
 import { useNavigate } from 'react-router-dom';
-
-
+import { useEffect } from 'react';
+import finance from '../../assets/finance_domain.png';
+import './Domains.css'
 const FinanceAccountingPage = () => {
   const navigate = useNavigate();
 
+   useEffect(() => {
+    requestAnimationFrame(() => {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    });
+  }, []);
+  
   return (
-    <div className="homepage">
+    <div className="homepage-d">
       <Navbar />
 
       {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-left">
+      <section className="hero-domain">
+        <div className="hero-left-domain">
           
           <h1>Finance & Accounting</h1>
           <p className="tagline">
@@ -24,11 +32,11 @@ const FinanceAccountingPage = () => {
             <button className="btn btn-signin" onClick={() => navigate('/#domains')}>Back to Domains</button>
           </div>
         </div>
-        <div className="hero-right">
+        <div className="hero-right-domain">
           <img
-            src="/images/medicine-hero.png" 
+            src={finance} 
             alt="Medical Illustration"
-            className="hero-image"
+            className="hero-image-domain"
           />
         </div>
       </section>

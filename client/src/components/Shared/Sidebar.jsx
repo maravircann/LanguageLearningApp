@@ -7,20 +7,31 @@ import { useLocation } from 'react-router-dom';
 const Sidebar = ({ selectedLanguage, onLanguageChange }) => {
   const navigate = useNavigate();
   const location = useLocation();
-
+  
   const isActive = (path) => location.pathname === path;
 
   const handleLogout = () => {
-    const recentLessons = localStorage.getItem("recentLessons");
-  const recentTests = localStorage.getItem("recentTests");
-
-    localStorage.clear();
-
-    if (recentLessons) localStorage.setItem("recentLessons", recentLessons);
-  if (recentTests) localStorage.setItem("recentTests", recentTests);
   
-    navigate('/');
-  };
+  const preservedRecents = {};
+
+  Object.keys(localStorage).forEach((key) => {
+    if (key.startsWith("recentLessons_") || key.startsWith("recentTests_")) {
+      preservedRecents[key] = localStorage.getItem(key);
+    }
+  });
+
+  
+  localStorage.clear();
+
+
+  Object.entries(preservedRecents).forEach(([key, value]) => {
+    localStorage.setItem(key, value);
+  });
+
+
+  navigate('/');
+};
+
 
   return (
     <aside className="sidebar">
@@ -65,6 +76,8 @@ const Sidebar = ({ selectedLanguage, onLanguageChange }) => {
           value={selectedLanguage}
           onChange={(e) => onLanguageChange(e.target.value)}
         >
+          <option value="" disabled hidden> Select a language </option>
+
           <option value="fr">French</option>
           <option value="de">German</option>
           <option value="es">Spanish</option>

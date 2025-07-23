@@ -8,6 +8,7 @@ import report from './report-controller.js'
 import domain from './domain-controller.js'
 import exportReports from './report-ml.js'
 import translateText from './translate-controller.js'
+import sendContactEmail from './contact-controller.js'
 export default{
     auth,
     lessons,
@@ -18,6 +19,7 @@ export default{
     report,
     domain,
     exportReports,
-    translateText
+    translateText,
+    sendContactEmail
 
 }

@@ -37,6 +37,7 @@
   text-decoration: none;
   color: #131111;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .nav-links .nav-btn {
@@ -58,4 +59,9 @@
 
 .nav-links .nav-register:hover {
   background-color: #1c224e;
+}
+
+.navbar a,
+.navbar button {
+  cursor: pointer;
 }

@@ -7,7 +7,7 @@ const login = async (req, res, next) => {
     const { email, password } = req.body;
 
     const result = await pool.query(
-      "SELECT id, name, email, password, domain_id FROM users WHERE email = $1 LIMIT 1",
+      "SELECT id, name, email, password, domain_id, created_at FROM users WHERE email = $1 LIMIT 1",
       [email]
     );
 
@@ -35,7 +35,8 @@ const login = async (req, res, next) => {
       id: user.id,
       name: user.name,
       email: user.email,
-      domain_id: user.domain_id
+      domain_id: user.domain_id,
+      created_at: user.created_at
     });
 
   } catch (err) {

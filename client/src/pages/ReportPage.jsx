@@ -14,7 +14,7 @@ const ReportPage = () => {
   const [predictedLevel, setPredictedLevel] = useState(null);
 
   const [chartImage, setChartImage] = useState(null);
-
+  const [radarImage, setRadarImage] = useState(null);
   
   const fetchMLSuggestions = async (reportData) => {
     try {
@@ -41,8 +41,8 @@ const ReportPage = () => {
       console.log("ML feedback primit:", data);
       setMlSuggestions(data.suggestions);
       setPredictedLevel(data.predicted_level);
-      setChartImage(data.chart_base64);  // adaugă această linie
-
+      setChartImage(data.bar_chart_base64);  
+      setRadarImage(data.radar_chart_base64);
     } catch (error) {
       console.error("ML Error:", error);
     }
@@ -132,22 +132,22 @@ const ReportPage = () => {
         <div className="report-section">
           <h3 className="section-title">Improvement Suggestions</h3>
           <ul className="suggestion-list">
-  {Array.isArray(report?.suggestions) &&
-    report.suggestions.map((s, i) => (
-      <li key={i}>{s}</li>
-    ))}
-</ul>
+          {Array.isArray(report?.suggestions) &&
+            report.suggestions.map((s, i) => (
+              <li key={i}>{s}</li>
+            ))}
+        </ul>
 
         </div>
 
         {Array.isArray(mlSuggestions) && mlSuggestions.length > 0 && (
           <div className="report-section">
             <h3 className="section-title">Tips based on your performance</h3>
-            {predictedLevel && (
+            {/* {predictedLevel && (
               <p><strong>Estimated level:</strong> {predictedLevel === "low" ? "Beginner" :
                                           predictedLevel === "medium" ? "Intermediate" :
                                           predictedLevel === "high" ? "Advanced" : predictedLevel}</p>
-    )}
+    )} */}
 
             <ul className="suggestion-list">
               {mlSuggestions.map((s, i) => (
@@ -167,6 +167,18 @@ const ReportPage = () => {
           />
         </div>
       )}
+
+      {radarImage && (
+        <div className="report-section">
+          <h3 className="section-title">Performance Overview (Radar)</h3>
+          <img
+            src={`data:image/png;base64,${radarImage}`}
+            alt="Radar Chart"
+            style={{ maxWidth: "100%", borderRadius: "8px", marginTop: "1rem" }}
+          />
+        </div>
+      )}
+
         <button className="back-btn" onClick={handleDownloadPDF}> Download PDF</button>
         <button className="back-btn" onClick={() => navigate("/profile")}>← Back to Profile</button>
       </div>
